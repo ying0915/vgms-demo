@@ -1,0 +1,2471 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>指导教师首页 - VGMS</title>
+<style>
+:root{--primary:#145bff;--primary-light:#e5edff;--accent:#f0f2ff;--success:#52c41a;--warning:#faad14;--destructive:#ff3860;--bg:#edf3fe;--card-bg:#fff;--text-primary:#030712;--text-secondary:#606266;--text-muted:#909399;--border:#e5e7eb;--radius:0.25rem;--shadow:0 1px 3px rgba(0,0,0,0.08);--sidebar-bg:#001529}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text-primary);font-size:14px;line-height:1.5715;min-width:1440px}
+.header{height:52px;background:var(--card-bg);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0}
+.header-brand{font-size:15px;font-weight:700;color:var(--text-primary);letter-spacing:-0.3px}
+.header-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.header-right{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.header-btn{display:flex;align-items:center;gap:3px;padding:3px 8px;border-radius:var(--radius);cursor:pointer;color:var(--text-secondary);font-size:12px;transition:background 0.2s}
+.header-btn:hover{background:var(--accent)}
+.header-btn svg{width:14px;height:14px}
+.header-divider{width:1px;height:18px;background:var(--border);margin:0 4px}
+.header-meta{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+.role-switcher{position:relative;display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:var(--radius);cursor:pointer;transition:background 0.2s}
+.role-switcher:hover{background:var(--accent)}
+.rs-text{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+.rs-arrow{width:11px;height:11px;color:var(--text-muted);transition:transform 0.2s;flex-shrink:0}
+.role-switcher:hover .rs-arrow{transform:rotate(180deg)}
+.role-switcher-dropdown{display:none;position:absolute;top:100%;right:0;margin-top:4px;background:var(--card-bg);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.12);min-width:140px;z-index:1000;overflow:hidden;border:1px solid var(--border)}
+.role-switcher:hover .role-switcher-dropdown{display:block}
+.dropdown-item.active{background:var(--accent);color:var(--primary);font-weight:500}
+.dropdown-item svg{width:13px;height:13px;color:var(--text-secondary);flex-shrink:0}
+.dropdown-item.active svg{color:var(--primary)}
+.user-menu{position:relative;display:flex;align-items:center;gap:5px;padding:3px 8px 3px 6px;border-radius:var(--radius);cursor:pointer;transition:background 0.2s}
+.user-menu:hover{background:var(--accent)}
+.u-avatar{width:26px;height:26px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;flex-shrink:0}
+.u-name{font-size:12px;font-weight:500}
+.u-arrow{width:11px;height:11px;color:var(--text-muted);transition:transform 0.2s;flex-shrink:0}
+.user-menu:hover .u-arrow{transform:rotate(180deg)}
+.user-dropdown{display:none;position:absolute;top:100%;right:0;background:var(--card-bg);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.12);min-width:140px;z-index:1000;overflow:hidden;border:1px solid var(--border)}
+.user-menu:hover .user-dropdown{display:block}
+.dropdown-item{display:flex;align-items:center;gap:6px;padding:8px 14px;font-size:12px;color:var(--text-secondary);transition:background 0.15s}
+.dropdown-item:hover{background:var(--accent);color:var(--text-primary)}
+.dropdown-item svg{width:13px;height:13px;flex-shrink:0}
+.dropdown-divider{height:1px;background:var(--border)}
+.page-layout{display:flex;height:calc(100vh - 52px);overflow:hidden}
+.sidebar{width:200px;background:var(--sidebar-bg);color:#fff;flex-shrink:0;display:flex;flex-direction:column;overflow-y:auto}
+.sidebar-logo{height:48px;display:flex;align-items:center;gap:8px;padding:0 16px;border-bottom:1px solid rgba(255,255,255,0.06);flex-shrink:0}
+.sidebar-logo svg{width:20px;height:20px;flex-shrink:0}
+.sidebar-logo span{font-size:14px;font-weight:600}
+.sidebar-menu{padding:6px 0 12px;flex:1}
+.sidebar-group{padding:10px 16px 2px;font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1px}
+.sidebar-item{display:flex;align-items:center;gap:8px;padding:8px 16px;color:rgba(255,255,255,0.65);cursor:pointer;font-size:13px;border-left:3px solid transparent;transition:all 0.15s}
+.sidebar-item:hover{color:#fff;background:rgba(255,255,255,0.06)}
+.sidebar-item.active{color:#fff;background:rgba(20,91,255,0.35);border-left-color:var(--primary)}
+.sidebar-item svg{width:15px;height:15px;flex-shrink:0}
+.main-area{flex:1;display:flex;min-height:0}
+.center-panel{flex:1;min-width:0;overflow-y:auto;padding:14px 16px;min-height:0}
+.right-panel{width:260px;flex-shrink:0;overflow-y:auto;padding:16px 16px 16px 0;display:flex;flex-direction:column;gap:12px;min-height:0}
+.page-title{font-size:17px;font-weight:700;margin-bottom:12px}
+.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.right-panel>.card{flex-shrink:0}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--border)}
+.card-header h4{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.card-header h4 svg{width:14px;height:14px}
+.card-body{padding:10px 14px}
+.project-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:12px}
+.project-section{border-bottom:1px solid var(--border);padding:12px 14px}
+.project-section:last-child{border-bottom:none}
+.project-section .ps-title{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.project-section .ps-title svg{width:12px;height:12px}
+.project-info{display:flex;flex-direction:column;gap:5px}
+.project-info .pi-row{display:flex;align-items:center;gap:8px;font-size:13px}
+.project-info .pi-row .pi-label{color:var(--text-muted);min-width:60px;font-size:12px}
+.project-info .pi-row .pi-value{color:var(--text-primary);font-weight:500}
+.project-section .placeholder{color:var(--text-muted);font-size:12px;font-style:italic;padding:4px 0}
+.review-item{display:flex;flex-direction:column;gap:2px;padding:4px 0}
+.review-item .ri-label{font-size:11px;color:var(--text-muted)}
+.review-item .ri-value{font-size:12px;color:var(--text-primary)}
+.review-item .ri-value.no-val{color:var(--text-muted);font-style:italic}
+.timeline-header{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.timeline-header svg{width:14px;height:14px;color:var(--primary)}
+.timeline{margin-bottom:12px}
+.tl-node{border:1px solid var(--border);border-radius:6px;margin-bottom:6px;overflow:hidden;transition:box-shadow 0.2s;background:var(--card-bg)}
+.tl-node.completed{border-left:3px solid var(--success)}
+.tl-node.current{border-left:3px solid var(--primary);box-shadow:0 0 0 1px rgba(20,91,255,0.1)}
+.tl-node.pending{border-left:3px solid var(--border)}
+.tl-header{display:flex;align-items:center;gap:8px;padding:9px 14px;cursor:pointer;user-select:none}
+.tl-header:hover{background:var(--accent)}
+.tl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.tl-node.completed .tl-dot{background:var(--success)}
+.tl-node.current .tl-dot{background:var(--primary);box-shadow:0 0 0 3px rgba(20,91,255,0.2);animation:dotPulse 2s infinite}
+@keyframes dotPulse{0%{box-shadow:0 0 0 3px rgba(20,91,255,0.2)}50%{box-shadow:0 0 0 6px rgba(20,91,255,0.08)}100%{box-shadow:0 0 0 3px rgba(20,91,255,0.2)}}
+.tl-node.pending .tl-dot{background:var(--border)}
+.tl-name{font-size:13px;font-weight:600;flex:1;min-width:0}
+.tl-badge{font-size:10px;padding:1px 6px;border-radius:3px;white-space:nowrap}
+.tl-badge.completed{background:#f6ffed;color:var(--success)}
+.tl-badge.current-badge{background:var(--primary-light);color:var(--primary)}
+.tl-badge.pending-badge{background:#f5f5f5;color:var(--text-muted)}
+.tl-arrow{width:12px;height:12px;color:var(--text-muted);flex-shrink:0;transition:transform 0.2s}
+.tl-node.open .tl-arrow{transform:rotate(90deg)}
+.tl-body{display:none;border-top:1px solid var(--border);padding:12px 14px}
+.tl-node.open .tl-body{display:block}
+.tl-todo-banner{background:#fff7e6;border:1px solid #ffe58f;border-radius:6px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tl-todo-banner .tt-left{display:flex;flex-direction:column;gap:1px}
+.tl-todo-banner .tt-left .tt-title{font-size:13px;font-weight:600;color:#8c6e00}
+.tl-todo-banner .tt-left .tt-meta{font-size:11px;color:#b8993e}
+.tl-todo-banner .tt-btn{padding:5px 16px;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:12px;border:none;cursor:pointer;white-space:nowrap}
+.tl-todo-banner .tt-btn:hover{opacity:0.9}
+.tl-todo-banner.done{background:#f6ffed;border-color:#b7eb8f}
+.tl-todo-banner.done .tt-left .tt-title{color:var(--success)}
+.tl-todo-banner.done .tt-left .tt-meta{color:#73d13d}
+.tl-flow{background:#f9fafb;border-radius:6px;padding:10px;margin-bottom:10px;display:flex;align-items:center;gap:4px;overflow-x:auto;flex-wrap:wrap}
+.tl-flow-step{display:flex;align-items:center;gap:3px;white-space:nowrap;font-size:12px}
+.tl-flow-step .f-dot{width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;color:#fff;flex-shrink:0}
+.tl-flow-step .f-dot.done{background:var(--success)}
+.tl-flow-step .f-dot.active{background:var(--primary)}
+.tl-flow-step .f-dot.wait{background:var(--border)}
+.tl-flow-step .f-label{color:var(--text-secondary);font-size:11px}
+.tl-flow-step .f-label.done-label{color:var(--success)}
+.tl-flow-step .f-label.active-label{color:var(--primary);font-weight:500}
+.tl-flow-arrow{color:var(--text-muted);font-size:11px;flex-shrink:0}
+.tl-detail{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.tl-detail .d-label{font-size:11px;color:var(--text-muted);margin-bottom:1px}
+.tl-detail .d-value{font-size:12px;color:var(--text-primary)}
+.tl-detail .d-value.no-val{color:var(--text-muted);font-style:italic}
+.tl-detail .d-value.pass{color:var(--success);font-weight:500}
+.shortcut-r .sc-grid-r{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:8px 10px;flex:1}
+.shortcut-r{display:flex;flex-direction:column;min-height:190px}
+.shortcut-r .sc-item{display:flex;align-items:center;gap:4px;padding:5px 6px;border-radius:4px;cursor:pointer;font-size:11px;color:var(--text-secondary);transition:all 0.15s;border:1px solid var(--border)}
+.shortcut-r .sc-item:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.shortcut-r .sc-item svg{width:13px;height:13px;flex-shrink:0}
+.shortcut-r .sc-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tab-bar-sm{display:flex;gap:0;font-size:12px}
+.tab-item-sm{padding:2px 8px;cursor:pointer;color:var(--text-muted);border-radius:3px;transition:all 0.15s}
+.tab-item-sm.active{color:var(--primary);background:var(--primary-light);font-weight:500}
+.todo-count{font-size:11px;background:var(--destructive);color:#fff;padding:0 5px;border-radius:8px;font-weight:600;min-width:16px;text-align:center}
+.todo-item{display:flex;align-items:center;gap:6px;padding:7px 0;border-bottom:1px solid #f3f4f6}
+.todo-item:last-child{border-bottom:none}
+.todo-icon{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.todo-icon.urgent{background:var(--destructive)}
+.todo-icon.normal{background:var(--warning)}
+.todo-info-t{flex:1;min-width:0}
+.todo-info-t .t-title{font-size:12px;font-weight:500;color:var(--text-primary);margin-bottom:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.todo-info-t .t-meta{font-size:11px;color:var(--text-muted);display:flex;gap:4px;flex-wrap:wrap}
+.todo-info-t .t-meta .stage-tag{font-size:10px;padding:0 4px;border-radius:2px;background:#f3f4f6;color:var(--text-muted)}
+.todo-btn{padding:2px 10px;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:11px;cursor:pointer;border:none;white-space:nowrap;flex-shrink:0;transition:opacity 0.15s}
+.todo-btn:hover{opacity:0.85}
+.tab-bar{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:6px}
+.tab-item{padding:5px 12px;font-size:12px;cursor:pointer;color:var(--text-muted);border-bottom:2px solid transparent;transition:all 0.15s}
+.tab-item:hover{color:var(--text-primary)}
+.tab-item.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.ann-item{padding:5px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;display:flex;align-items:center;gap:6px}
+.ann-item:last-child{border-bottom:none}
+.ann-item:hover{background:#fafbff;margin:0 -14px;padding-left:14px;padding-right:14px}
+.ann-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.ann-dot.new{background:var(--destructive)}
+.ann-dot.normal{background:var(--primary)}
+.ann-item .a-title{font-size:12px;color:var(--text-primary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ann-item .a-date{font-size:11px;color:var(--text-muted);flex-shrink:0}
+.msg-item{padding:5px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;display:flex;align-items:center;gap:6px}
+.msg-item:last-child{border-bottom:none}
+.msg-item:hover{background:#fafbff;margin:0 -14px;padding-left:14px;padding-right:14px}
+.msg-item .m-from{font-size:11px;color:var(--text-muted);flex-shrink:0;min-width:44px}
+.msg-item .m-title{font-size:12px;color:var(--text-primary);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.msg-item .m-date{font-size:11px;color:var(--text-muted);flex-shrink:0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card-bg);border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,0.18);width:460px;max-width:90vw;max-height:65vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border)}
+.modal-header h3{font-size:14px;font-weight:600;flex:1;min-width:0}
+.modal-close{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:4px;border:none;background:transparent;cursor:pointer;color:var(--text-muted);font-size:16px;flex-shrink:0}
+.modal-close:hover{background:var(--accent)}
+.modal-body{padding:16px 18px;overflow-y:auto;flex:1}
+.modal-body .meta-row{display:flex;gap:14px;margin-bottom:12px;font-size:12px;color:var(--text-muted)}
+.modal-body .content-text{font-size:13px;line-height:1.7;color:var(--text-primary)}
+.modal-footer{padding:10px 18px;border-top:1px solid var(--border);text-align:right}
+.modal-footer button{padding:5px 18px;border-radius:var(--radius);border:none;font-size:12px;cursor:pointer;background:var(--primary);color:#fff}
+.modal-footer button:hover{opacity:0.9}
+
+/* Flow header - 双视图 */
+.flow-header-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px}
+.flow-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.guide-header{display:flex;align-items:center;justify-content:space-between;margin-top:8px;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.fw-title{font-size:15px;font-weight:700}
+.fw-hint{font-size:11px;color:var(--text-muted)}
+.fw-count{font-size:11px;background:var(--primary-light);color:var(--primary);padding:2px 8px;border-radius:10px;font-weight:500}
+.fw-tabs{display:flex;background:var(--bg);border-radius:4px;padding:2px}
+.fw-tab{padding:4px 12px;font-size:12px;border-radius:3px;cursor:pointer;color:var(--text-secondary);transition:all 0.15s}
+.fw-tab.active{background:var(--card-bg);color:var(--primary);font-weight:500;box-shadow:0 1px 2px rgba(0,0,0,0.08)}
+
+/* 任务视图 */
+.task-view{display:none;margin-bottom:12px}
+.task-view.active{display:block}
+.tv-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;margin-bottom:5px;cursor:pointer;transition:box-shadow 0.15s}
+.tv-item:hover{box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.tv-item.urgent{border-left:3px solid var(--destructive)}
+.tv-dot{width:7px;height:7px;border-radius:50%;background:var(--text-muted);flex-shrink:0}
+.tv-item.urgent .tv-dot{background:var(--destructive)}
+.tv-info{flex:1;min-width:0}
+.tv-title{font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tv-meta{font-size:11px;color:var(--text-muted);margin-top:2px}
+.tv-topic{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}
+.tv-topic{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}
+.stage-tag-sm{font-size:10px;background:var(--accent);color:var(--text-secondary);padding:0 6px;border-radius:3px}
+.tv-btn{flex-shrink:0;padding:3px 10px;font-size:11px;border-radius:3px;border:none;background:var(--primary);color:#fff;cursor:pointer}
+.tv-btn:hover{opacity:0.9}
+
+/* 视图切换 */
+.timeline.active{display:block}
+.timeline:not(.active){display:none}
+
+/* 培养类型下拉 */
+.header-version{position:relative;display:flex;align-items:center;gap:3px;padding:4px 10px;border-radius:var(--radius);cursor:pointer;color:var(--text-secondary);font-size:12px;transition:background 0.2s;white-space:nowrap}
+.header-version:hover{background:var(--accent);color:var(--text-primary)}
+.header-version svg{width:12px;height:12px}
+.header-version-dd{display:none;position:absolute;top:100%;left:0;margin-top:4px;background:var(--card-bg);border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,0.12);min-width:130px;z-index:1000;overflow:hidden;border:1px solid var(--border)}
+.header-version.open .header-version-dd{display:block}
+.header-version-dd .v-item{padding:8px 14px;font-size:12px;color:var(--text-secondary);transition:background 0.15s;display:flex;align-items:center;justify-content:space-between;gap:8px;cursor:pointer}
+.header-version-dd .v-item:hover{background:var(--accent);color:var(--text-primary)}
+.header-version-dd .v-item.active{color:var(--primary);background:var(--primary-light);font-weight:500}
+.header-version-dd .v-check{opacity:0;color:var(--primary);font-weight:700;font-size:11px}
+.header-version-dd .v-item.active .v-check{opacity:1}
+
+/* 搜索框 */
+.header-search{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--bg);border-radius:14px;width:200px;transition:all 0.15s;height:28px}
+.header-search:focus-within{background:var(--card-bg);box-shadow:0 0 0 1px var(--primary-light)}
+.header-search svg{width:13px;height:13px;color:var(--text-muted);flex-shrink:0}
+.header-search input{flex:1;border:none;background:transparent;outline:none;font-size:12px;color:var(--text-primary);min-width:0;height:100%}
+.header-search input::placeholder{color:var(--text-muted)}
+
+/* 页面标签器 */
+.page-tabs{display:flex;align-items:flex-end;gap:4px;margin-bottom:0;padding:0 4px;height:36px;background:var(--bg);border-bottom:1px solid var(--border);border-radius:0}
+.page-tab{padding:0 12px 0 14px;font-size:13px;color:var(--text-secondary);cursor:pointer;height:30px;display:flex;align-items:center;gap:8px;background:transparent;border:1px solid transparent;border-bottom:none;border-radius:6px 6px 0 0;margin-bottom:-1px;transition:all 0.15s;font-weight:500;user-select:none;position:relative}
+.page-tab:hover{color:var(--text-primary);background:rgba(255,255,255,0.6)}
+.page-tab.active{color:var(--primary);background:var(--card-bg);border-color:var(--border);font-weight:600}
+.page-tab-close{width:16px;height:16px;display:flex;align-items:center;justify-content:center;border-radius:3px;color:var(--text-muted);font-size:14px;line-height:1;transition:all 0.15s;cursor:pointer;flex-shrink:0}
+.page-tab-close:hover{background:var(--accent);color:var(--text-primary)}
+.page-tab-badge{font-size:10px;background:var(--destructive);color:#fff;padding:0 5px;border-radius:8px;font-weight:600;min-width:16px;text-align:center;line-height:16px;height:16px}
+.page-tab-empty{color:var(--text-muted);font-size:12px;padding:8px 16px;cursor:default}
+
+/* 快捷工具竖向 */
+.shortcut-v-card .sv-list{padding:6px 10px 10px}
+.sv-item{display:flex;align-items:center;gap:10px;padding:7px 8px;border-radius:4px;cursor:pointer;transition:background 0.15s}
+.sv-item:hover{background:var(--accent)}
+.sv-icon-wrap{width:32px;height:32px;border-radius:6px;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sv-icon-wrap svg{width:16px;height:16px}
+.sv-text{flex:1;min-width:0}
+.sv-title{font-size:13px;font-weight:500}
+.sv-desc{font-size:11px;color:var(--text-muted);margin-top:1px}
+
+/* 关键日期 v2 - 日历样式 */
+.kd-calendar{padding:6px 10px 8px}
+.kd-cal-header{display:flex;align-items:center;justify-content:space-between;padding:2px 0 8px}
+.kd-cal-title{font-size:12px;font-weight:600;color:var(--text-primary)}
+.kd-cal-nav{display:flex;gap:2px}
+.kd-cal-nav-btn{width:20px;height:20px;display:flex;align-items:center;justify-content:center;border-radius:3px;cursor:pointer;color:var(--text-secondary);background:transparent;border:none;transition:all 0.15s}
+.kd-cal-nav-btn:hover{background:var(--accent);color:var(--primary)}
+.kd-cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:2px}
+.kd-cal-wd{text-align:center;font-size:10px;color:var(--text-muted);padding:2px 0}
+.kd-cal-wd.weekend{color:var(--destructive)}
+.kd-cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px}
+.kd-cal-cell{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text-secondary);border-radius:3px;cursor:default}
+.kd-cal-cell.dim{color:var(--text-muted);opacity:0.35}
+.kd-cal-cell.today{background:var(--primary-light);color:var(--primary);font-weight:600}
+.kd-cal-cell.selected{background:var(--primary);color:#fff;font-weight:600;box-shadow:0 0 0 1.5px var(--primary)}
+.kd-cal-cell.selected .event-mark{background:#fff}
+.kd-cal-next-item.done{border-left-color:var(--success);opacity:0.7}
+.kd-cal-next-item.done .kd-cal-next-date{color:var(--success);background:#f0f9eb}
+.kd-cal-next-item.done .kd-cal-next-title{text-decoration:line-through}
+.kd-cal-cell.has-event{font-weight:600;color:var(--text-primary);cursor:pointer;transition:background 0.15s}
+.kd-cal-cell.has-event:hover{background:var(--accent)}
+.kd-cal-cell .day-num{line-height:1}
+.kd-cal-cell .event-mark{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--primary)}
+.kd-cal-cell.urgent{background:#fff1f0}
+.kd-cal-cell.urgent .event-mark{background:var(--destructive);width:6px;height:6px;bottom:1px}
+.kd-cal-cell.urgent.today{background:#ffd6d6;color:var(--destructive)}
+.kd-cal-cell.done{color:var(--text-muted)}
+.kd-cal-cell.done .day-num{text-decoration:line-through}
+.kd-cal-cell.done .event-mark{background:var(--success)}
+.kd-cal-cell.done.urgent .event-mark{background:var(--success)}
+.kd-cal-cal-empty{aspect-ratio:1}
+.kd-cal-footer{border-top:1px solid var(--border);margin-top:6px;padding-top:8px}
+.kd-cal-legend{display:flex;gap:8px;font-size:10px;color:var(--text-muted);margin-bottom:6px;flex-wrap:wrap}
+.kd-cal-legend-item{display:flex;align-items:center;gap:3px}
+.kd-cal-legend-dot{width:5px;height:5px;border-radius:50%}
+.kd-cal-next-list{display:flex;flex-direction:column;gap:5px;margin-top:6px;max-height:180px;overflow-y:auto;padding-right:2px}
+.kd-cal-next-list::-webkit-scrollbar{width:4px}
+.kd-cal-next-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.kd-cal-next-item{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--card-bg);border:1px solid var(--border);border-radius:4px;cursor:pointer;transition:all 0.15s;border-left:3px solid var(--destructive)}
+.kd-cal-next-item:hover{box-shadow:0 1px 4px rgba(0,0,0,0.08);background:var(--accent)}
+.kd-cal-next-item.normal{border-left-color:var(--warning)}
+.kd-cal-next-date{flex-shrink:0;font-size:11px;font-weight:600;color:var(--destructive);min-width:32px;text-align:center;background:#fff1f0;padding:3px 4px;border-radius:3px;font-family:'SF Mono',Monaco,Consolas,monospace}
+.kd-cal-next-item.normal .kd-cal-next-date{color:var(--warning);background:#fffbe6}
+.kd-cal-next-body{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;gap:6px}
+.kd-cal-next-title{font-size:11px;font-weight:500;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;min-width:0}
+.kd-cal-next-days{flex-shrink:0;font-size:10px;color:var(--text-muted)}
+.kd-cal-next.empty{justify-content:center;color:var(--text-muted);font-size:11px;cursor:default}
+
+/* 通知摘要 */
+.notif-card .notif-body{padding:4px 10px 10px}
+.ann-item.expanded{cursor:pointer;padding:6px 4px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px}
+.ann-item.expanded:last-child{border-bottom:none}
+.ann-item.expanded .ann-summary{flex:0 0 100%;font-size:11px;color:var(--text-muted);line-height:1.5;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ann-item:not(.expanded){padding:6px 4px;border-bottom:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:6px}
+.ann-item:not(.expanded):last-child{border-bottom:none}
+
+/* 站内信摘要 */
+.msg-item .ann-summary{flex:0 0 100%;font-size:11px;color:var(--text-muted);line-height:1.4;margin-top:1px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+
+
+/* ========== 我的指导模块 ========== */
+.guide-view{display:block}
+.guide-hint-row{font-size:11px;color:var(--text-secondary);background:var(--accent);padding:6px 12px;border-radius:4px;margin-bottom:10px;display:flex;align-items:center;gap:6px;border:1px solid #e0e7ff}
+.guide-hint-row .hint-icon{font-size:13px}
+
+.student-list{display:flex;flex-direction:column}
+.student-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;overflow:hidden;transition:all 0.15s}
+.student-card:hover{border-color:#d0d8f0}
+.student-card.expanded{border-color:var(--primary);box-shadow:0 2px 8px rgba(20,91,255,0.08)}
+.student-card.expanded .sc-header{background:#fafbff}
+
+.sc-header{padding:10px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;transition:background 0.15s}
+.sc-header:hover{background:var(--accent)}
+.sc-avatar{width:34px;height:34px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;flex-shrink:0}
+.sc-info{flex:0 0 140px;min-width:0;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.sc-name-row{display:flex;align-items:center;gap:6px}
+.sc-name{font-size:13px;font-weight:600;color:var(--text-primary)}
+.sc-id{font-size:11px;color:var(--text-muted);font-family:'SF Mono',Monaco,Consolas,monospace}
+.sc-topic{font-size:14px;color:var(--text-primary);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 0;flex:1 1 auto;min-width:0}
+.sc-org{font-size:11px;color:var(--text-muted)}
+
+.sc-stage{font-size:10px;padding:2px 8px;border-radius:3px;background:var(--accent);color:var(--text-secondary);flex-shrink:0;font-weight:500}
+.sc-stage.stage-writing{background:#e5edff;color:#145bff}
+.sc-stage.stage-proposal{background:#fff4e5;color:#fa8c16}
+.sc-stage.stage-midterm{background:#e5f9ee;color:#52c41a}
+.sc-stage.stage-defense{background:#f0e5ff;color:#722ed1}
+.sc-stage.stage-topic{background:#e5f7ff;color:#13c2c2}
+
+.sc-pending{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-muted);flex-shrink:0;background:var(--bg);padding:3px 8px;border-radius:10px}
+.sc-pending .p-count{background:var(--destructive);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px;font-weight:600;min-width:18px;text-align:center}
+.sc-pending.no-pending .p-count{background:#e5e7eb;color:var(--text-muted)}
+
+.sc-keydate{font-size:11px;flex-shrink:0;display:flex;align-items:center;gap:3px;color:var(--text-muted);white-space:nowrap}
+.sc-keydate.urgent{color:var(--destructive);font-weight:500}
+.sc-keydate.normal{color:var(--warning)}
+.sc-keydate.done{color:var(--success)}
+
+.sc-arrow{width:14px;height:14px;color:var(--text-muted);transition:transform 0.2s;flex-shrink:0}
+.student-card.expanded .sc-arrow{transform:rotate(90deg);color:var(--primary)}
+
+.sc-body{display:none;padding:0 14px 14px;background:#fafbff;border-top:1px solid var(--border)}
+.student-card.expanded .sc-body{display:block}
+
+.sc-section{margin-top:12px}
+.sc-section-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.sc-section-title svg{width:13px;height:13px;color:var(--text-secondary)}
+
+.sc-topic-card{background:var(--card-bg);border:1px solid var(--border);border-radius:4px;padding:4px 10px}
+.sc-topic-card .pi-row{padding:5px 0;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:8px}
+.sc-topic-card .pi-row:last-child{border-bottom:none}
+.sc-topic-card .pi-label{font-size:11px;color:var(--text-muted);width:70px;flex-shrink:0}
+.sc-topic-card .pi-value{font-size:12px;color:var(--text-primary);flex:1}
+
+/* 阶段卡片 - 横向布局 */
+.sc-stage-cards{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px}
+.sc-stage-cards::-webkit-scrollbar{height:5px}
+.sc-stage-cards::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.sc-stage-card{flex:0 0 150px;background:var(--card-bg);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:6px;padding:9px 10px;display:flex;flex-direction:column;gap:4px;transition:all 0.15s}
+.sc-stage-card:hover{box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.sc-stage-card-head{display:flex;align-items:center;gap:5px}
+.sc-stage-card-idx{font-size:10px;color:var(--text-muted);font-weight:500;background:var(--bg);border-radius:8px;padding:1px 5px;flex-shrink:0}
+.sc-stage-card-name{font-size:12px;font-weight:600;color:var(--text-primary);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-stage-card-tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:10px;flex-shrink:0;line-height:1.4}
+.sc-stage-card-line{display:flex;align-items:center;gap:4px;font-size:11px}
+.sc-stage-card-lbl{color:var(--text-muted);flex-shrink:0;width:56px;font-size:11px}
+.sc-stage-card-val{color:var(--text-secondary);font-family:'SF Mono',Monaco,Consolas,monospace;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-stage-card-done{border-left-color:var(--success)}
+.sc-stage-card-done .sc-stage-card-tag{background:#e5f9ee;color:var(--success)}
+.sc-stage-card-review{border-left-color:var(--destructive)}
+.sc-stage-card-review .sc-stage-card-tag{background:#fff1f0;color:var(--destructive)}
+.sc-stage-card-progress{border-left-color:var(--primary)}
+.sc-stage-card-progress .sc-stage-card-tag{background:var(--primary-light);color:var(--primary)}
+.sc-stage-card-notstart{border-left-color:var(--border)}
+.sc-stage-card-notstart .sc-stage-card-tag{background:#e5e7eb;color:var(--text-muted)}
+.sc-stage-card-notstart .sc-stage-card-idx,
+.sc-stage-card-notstart .sc-stage-card-name,
+.sc-stage-card-notstart .sc-stage-card-lbl,
+.sc-stage-card-notstart .sc-stage-card-val{opacity:0.55}
+/* 阶段卡片 - 流程概览行（v3 round5） */
+.sc-stage-card{position:relative}
+.sc-stage-flow-summary{position:relative}
+.sc-stage-flow-summary .sc-flow-tooltip{position:absolute;top:100%;left:0;margin-top:6px;z-index:100;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:8px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:none;flex-direction:row;flex-wrap:wrap;gap:6px;align-items:center;min-width:260px;max-width:340px}
+.sc-stage-flow-summary:hover .sc-flow-tooltip{display:flex}
+.sc-stage-flow-summary .sc-flow-tooltip::before{content:"";position:absolute;bottom:100%;left:24px;border:5px solid transparent;border-bottom-color:var(--border)}
+.sc-stage-flow-summary .sc-flow-tooltip::after{content:"";position:absolute;bottom:100%;left:25px;transform:translateY(1px);border:4px solid transparent;border-bottom-color:var(--card-bg)}
+.sc-flow-step{display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:1.3;white-space:nowrap}
+.sc-flow-dot{width:14px;height:14px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;line-height:1}
+.sc-flow-dot.done{background:var(--success);color:#fff}
+.sc-flow-dot.active{background:var(--primary);color:#fff}
+.sc-flow-dot.wait{background:var(--bg);color:var(--text-muted);border:1px solid var(--border)}
+.sc-flow-label{color:var(--text-secondary);font-size:11px}
+.sc-flow-step.active .sc-flow-label{color:var(--primary);font-weight:500}
+.sc-flow-step.wait .sc-flow-label{color:var(--text-muted);opacity:0.7}
+.sc-flow-arrow{color:var(--text-muted);font-size:10px;opacity:0.5;flex-shrink:0}
+
+
+.sc-stage-row .sc-cell{padding:7px 10px;display:flex;align-items:center;min-width:0;justify-content:center}
+.sc-stage-row .sc-cell.label{font-weight:500;color:var(--text-primary);background:#fafbff;border-right:1px solid var(--border);font-size:12px;justify-content:flex-start}
+.sc-stage-row .sc-cell.dim{color:var(--text-muted);font-style:italic}
+.sc-stage-row .sc-cell.pass{color:var(--success);font-weight:500}
+.sc-stage-row .sc-cell.warn{color:var(--warning);font-weight:500}
+.sc-stage-row.head .sc-cell{padding:6px 10px}
+
+.sc-actions{margin-top:12px;display:flex;gap:8px;justify-content:flex-end;padding-top:10px;border-top:1px solid #f3f4f6}
+.sc-btn{padding:5px 14px;border-radius:4px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--card-bg);color:var(--text-primary);transition:all 0.15s;font-family:inherit}
+.sc-btn:hover{border-color:var(--primary);color:var(--primary)}
+.sc-btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sc-btn.primary:hover{opacity:0.9;color:#fff}
+
+
+/* 筛选栏 */
+.filter-bar{display:flex;flex-direction:column;padding:10px 14px 0;background:transparent;margin-bottom:12px}
+
+/* 业务筛选 - 填充胶囊（主筛选） */
+.task-pills{display:flex;gap:5px;flex-wrap:wrap}
+.task-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:16px;font-size:12px;background:transparent;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap;user-select:none;font-weight:400}
+.task-pill:hover{background:var(--accent);color:var(--text-primary)}
+.task-pill.active{background:var(--primary);color:#fff;font-weight:500}
+.task-pill.zero{opacity:0.45}
+.task-pill-count{font-size:10px;padding:0 5px;border-radius:8px;background:rgba(0,0,0,0.06);font-weight:500;line-height:1.5}
+.task-pill.active .task-pill-count{background:rgba(255,255,255,0.25);color:#fff}
+
+/* 状态筛选 - 色点+文字（辅助筛选） */
+.status-pills{display:flex;gap:2px;padding-top:6px;flex-wrap:wrap}
+.status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;font-size:11px;color:var(--text-muted);cursor:pointer;transition:all 0.15s;border-radius:4px;user-select:none;background:transparent}
+.status-pill:hover{color:var(--text-primary);background:var(--accent)}
+.status-pill.active{color:var(--primary);font-weight:500}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.status-dot.s-pending{background:#fa8c16}
+.status-dot.s-review{background:#145bff}
+.status-dot.s-done{background:#52c41a}
+.status-dot.s-other{background:#bbb}
+.status-dot.s-all{background:linear-gradient(135deg,#145bff 50%,#52c41a 50%)}
+.sp-count{font-size:10px;color:var(--text-muted);font-weight:400}
+.status-pill.active .sp-count{color:var(--primary)}
+
+/* 任务状态徽标 */
+.tv-status{font-size:10px;padding:1px 7px;border-radius:9px;font-weight:500;flex-shrink:0;margin-left:auto}
+.tv-status.st-pending{background:#fff4e5;color:#fa8c16}
+.tv-status.st-review{background:#e5edff;color:#145bff}
+.tv-status.st-done{background:#e5f9ee;color:#52c41a}
+.tv-status.st-other{background:#f0f0f0;color:#888}
+
+.tv-empty{padding:30px 14px;text-align:center;color:var(--text-muted);font-size:12px;display:none}
+.task-list-card{background:transparent;border-radius:0;overflow:visible;box-shadow:none;border:none}
+.task-list-card .tv-item{padding:10px 14px}
+.task-list-card .tv-meta{gap:6px}
+.task-list-card .tv-meta .meta-sep{color:var(--border)}
+
+.page-tab.home{background:var(--card-bg);border-color:var(--border);font-weight:600;color:var(--text-primary);padding-left:10px}
+.page-tab.home:hover{background:var(--card-bg);border-color:var(--primary-light)}
+.page-tab.home .page-tab-home-icon{width:13px;height:13px;color:var(--text-secondary);margin-right:2px;flex-shrink:0}
+.page-tab.home.active .page-tab-home-icon{color:var(--primary)}
+
+.kd-cal-cell{position:relative}
+.event-more{position:absolute;bottom:2px;right:3px;font-size:9px;background:var(--destructive);color:#fff;padding:0 3px;border-radius:6px;font-weight:600;line-height:11px;min-width:14px;text-align:center}
+</style>
+</head>
+<body>
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-brand">VGMS 维普毕业论文（设计）管理系统</div>
+    <div class="header-version" id="versionDD" onclick="toggleVersionDD(event)">
+      <span id="versionLabel">本科生版</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+      <div class="header-version-dd">
+        <div class="v-item active" data-v="本科生版" onclick="selectVersion(event,'本科生版')">本科生版 <span class="v-check">✓</span></div>
+        <div class="v-item" data-v="继教版" onclick="selectVersion(event,'继教版')">继教版 <span class="v-check">✓</span></div>
+        <div class="v-item" data-v="研究生版" onclick="selectVersion(event,'研究生版')">研究生版 <span class="v-check">✓</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="搜索功能">
+    </div>
+    <div class="header-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>下载</div>
+    <div class="header-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>帮助</div>
+    <div class="header-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>移动端</div>
+    <div class="header-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>消息</div>
+    <div class="header-divider"></div>
+    <div class="role-switcher">
+      <span class="rs-text">2026届 / 指导教师</span>
+      <svg class="rs-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+      <div class="role-switcher-dropdown">
+        <div class="dropdown-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>指导教师</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>评阅教师</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>答辩教师</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>系主任</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>教学秘书</div>
+      </div>
+    </div>
+    <div class="header-divider"></div>
+    <div class="user-menu">
+      <div class="u-avatar">王</div>
+      <span class="u-name">王建华</span>
+      <svg class="u-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6,9 12,15 18,9"/></svg>
+      <div class="user-dropdown">
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>电子签名</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>修改密码</div>
+        <div class="dropdown-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>安全设置</div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" style="color:var(--destructive);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>退出</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <div class="sidebar">
+    <div class="sidebar-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg><span>毕设管理系统</span></div>
+    <div class="sidebar-menu">
+      <div class="sidebar-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>默认首页</div>
+      <div class="sidebar-group">基础设置</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>消息管理</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>个人信息</div>
+      <div class="sidebar-group">智能辅助</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>维普慧导</div>
+      <div class="sidebar-group">流程管理</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>选题管理</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10l-6-6H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2v-8z"/><polyline points="22,10 16,10 16,4"/></svg>过程管理</div>
+      <div class="sidebar-group">数据管理</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>文件下载</div>
+      <div class="sidebar-group">专项服务</div>
+      <div class="sidebar-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>抽检字段</div>
+    </div>
+  </div>
+
+  <div class="main-area">
+    <div class="center-panel">
+      <div class="page-tabs">
+        <div class="page-tab home" onclick="switchPageTab(this);console.log('切回E02')"><svg class="page-tab-home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1h-5v-7H9v7H4a1 1 0 01-1-1V9.5z"/></svg>工作台</div>
+        <div class="page-tab active" onclick="switchPageTab(this)">首页<span class="page-tab-close" onclick="event.stopPropagation()" title="关闭">×</span></div>
+        <div class="page-tab" onclick="switchPageTab(this)">文档中心<span class="page-tab-close" onclick="event.stopPropagation()" title="关闭">×</span></div>
+      </div>
+
+      <!-- 我的指导模块 -->
+      <div class="guide-header">
+        <div class="fw-tabs" id="mainTabs">
+          <span class="fw-tab active" onclick="switchGuideView(this, 'tasks')">我的任务 <span class="fw-count">12</span></span>
+          <span class="fw-tab" onclick="switchGuideView(this, 'students')">我的学生 <span class="fw-count">10</span></span>
+        </div>
+      </div>
+
+      <!-- 学生视图 -->
+      <div id="studentsView" class="guide-view" style="display:none">
+        <div class="guide-hint-row">
+          <span class="hint-icon">💡</span>
+          <span>点击学生卡片可展开查看阶段详情</span>
+        </div>
+        <div class="student-list">
+        <div class="student-card" data-sid="2021010101">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">张</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">张伟</span><span class="sc-id">/ 2021010101</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">基于 SpringBoot 的在线教育平台设计与实现</div>
+            <div class="sc-pending"><span class="p-count">1</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">系主任审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-04-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-review">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">待审</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评阅</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-06-22</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">待审</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010102">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">李</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">李娜</span><span class="sc-id">/ 2021010102</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">深度学习在医学影像诊断中的应用研究</div>
+            <div class="sc-pending no-pending"><span class="p-count">0</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-progress">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">进行中</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评分</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">初稿提交</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010103">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">王</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">王强</span><span class="sc-id">/ 2021010103</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">区块链技术在供应链管理中的研究</div>
+            <div class="sc-pending"><span class="p-count">1</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-review">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">待审</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-06-22</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">待审</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交材料</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">初稿提交</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010104">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">刘</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">刘洋</span><span class="sc-id">/ 2021010104</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">物联网智能家居系统的设计与实现</div>
+            <div class="sc-pending"><span class="p-count">2</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">系主任审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-04-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-review">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">待审</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评阅</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-06-22</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">待审</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010105">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">陈</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">陈静</span><span class="sc-id">/ 2021010105</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">基于 NLP 的智能客服系统研究</div>
+            <div class="sc-pending no-pending"><span class="p-count">0</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-progress">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">进行中</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交材料</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">初稿提交</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010106">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">杨</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">杨帆</span><span class="sc-id">/ 2021010106</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">云计算环境下的数据安全研究</div>
+            <div class="sc-pending"><span class="p-count">1</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">系主任审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-04-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-review">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">待审</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评阅</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-06-22</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">待审</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010107">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">赵</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">赵敏</span><span class="sc-id">/ 2021010107</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">推荐算法在电商平台中的应用</div>
+            <div class="sc-pending no-pending"><span class="p-count">0</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-progress">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">进行中</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交材料</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">初稿提交</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010108">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">黄</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">黄磊</span><span class="sc-id">/ 2021010108</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">基于大数据的城市交通流量预测</div>
+            <div class="sc-pending no-pending"><span class="p-count">0</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-progress">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">进行中</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交开题报告</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交材料</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">初稿提交</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010109">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">周</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">周婷</span><span class="sc-id">/ 2021010109</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">机器学习在金融风控中的研究</div>
+            <div class="sc-pending"><span class="p-count">1</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">系主任审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-04-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-review">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">待审</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评阅</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-06-22</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">待审</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="student-card" data-sid="2021010110">
+          <div class="sc-header" onclick="toggleStudentCard(this)">
+            <div class="sc-avatar">吴</div>
+            <div class="sc-info">
+              <div class="sc-name-row"><span class="sc-name">吴军</span><span class="sc-id">/ 2021010110</span></div>
+              
+              <div class="sc-org">计算机学院 / 物联网工程</div>
+            </div>
+              <div class="sc-topic">移动应用跨平台开发框架对比研究</div>
+            <div class="sc-pending no-pending"><span class="p-count">0</span><span>待审</span></div>
+            <svg class="sc-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
+          </div>
+          <div class="sc-body">
+            <div class="sc-section">
+              <div class="sc-section-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 9,11 13,15 21,7"/><polyline points="14,7 21,7 21,14"/></svg>阶段完成情况</div>
+              <div class="sc-stage-cards">
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">1</span>
+                  <span class="sc-stage-card-name">选题</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交选题</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2025-12-15</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">2</span>
+                  <span class="sc-stage-card-name">开题报告</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">审核通过</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交开题报告</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-03-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-done">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">3</span>
+                  <span class="sc-stage-card-name">中期检查</span>
+                  <span class="sc-stage-card-tag">已完成</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">系主任审核</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">提交材料</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">指导教师评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">系主任审核</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">2026-04-20</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">通过</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-progress">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">4</span>
+                  <span class="sc-stage-card-name">论文撰写</span>
+                  <span class="sc-stage-card-tag">进行中</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">指导教师评阅</span><div class="sc-flow-tooltip"><div class="sc-flow-step done"><span class="sc-flow-dot done">✓</span><span class="sc-flow-label">初稿提交</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step active"><span class="sc-flow-dot active">●</span><span class="sc-flow-label">指导教师评阅</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">修改</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">终稿提交</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">5</span>
+                  <span class="sc-stage-card-name">论文查重</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">提交查重</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">提交查重</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">查重审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">审核通过</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">6</span>
+                  <span class="sc-stage-card-name">答辩</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">答辩申请</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩申请</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩小组评分</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">答辩结果公示</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              <div class="sc-stage-card sc-stage-card-notstart">
+                <div class="sc-stage-card-head">
+                  <span class="sc-stage-card-idx">7</span>
+                  <span class="sc-stage-card-name">成绩归档</span>
+                  <span class="sc-stage-card-tag">未开始</span>
+                </div><div class="sc-stage-card-line sc-stage-flow-summary"><span class="sc-stage-card-lbl">流程概览</span><span class="sc-stage-card-val">成绩录入</span><div class="sc-flow-tooltip"><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">成绩录入</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">教学秘书审核</span></div><span class="sc-flow-arrow">→</span><div class="sc-flow-step wait"><span class="sc-flow-dot wait">○</span><span class="sc-flow-label">归档完成</span></div></div></div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">提交时间</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+                <div class="sc-stage-card-line">
+                  <span class="sc-stage-card-lbl">审核结果</span>
+                  <span class="sc-stage-card-val">--</span>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="sc-actions">
+              <button class="sc-btn primary" onclick="event.stopPropagation();alert('打开审阅页')">去审核</button><button class="sc-btn" onclick="event.stopPropagation();alert('打回原因填写')">打回</button>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+      <!-- 任务视图 -->
+      <div id="tasksView" class="guide-view">
+        <div class="filter-bar">
+          <div class="task-pills" id="taskPills">
+            <div class="task-pill active" data-stage="all">全部 <span class="task-pill-count">12</span></div>
+            <div class="task-pill" data-stage="topic">选题 <span class="task-pill-count">1</span></div>
+            <div class="task-pill zero" data-stage="task">任务书 <span class="task-pill-count">0</span></div>
+            <div class="task-pill" data-stage="proposal">开题报告 <span class="task-pill-count">3</span></div>
+            <div class="task-pill" data-stage="midterm">中期检查 <span class="task-pill-count">3</span></div>
+            <div class="task-pill" data-stage="writing">论文初稿 <span class="task-pill-count">3</span></div>
+            <div class="task-pill zero" data-stage="final">论文定稿 <span class="task-pill-count">0</span></div>
+            <div class="task-pill" data-stage="defense">答辩 <span class="task-pill-count">1</span></div>
+            <div class="task-pill" data-stage="bizname">业务名称 <span class="task-pill-count">1</span></div>
+          </div>
+          <div class="status-pills" id="statusPills">
+            <div class="status-pill active" data-status="all"><span class="status-dot s-all"></span>全部 <span class="sp-count">12</span></div>
+            <div class="status-pill" data-status="pending"><span class="status-dot s-pending"></span>待提交 <span class="sp-count">3</span></div>
+            <div class="status-pill" data-status="review"><span class="status-dot s-review"></span>审核中 <span class="sp-count">5</span></div>
+            <div class="status-pill" data-status="done"><span class="status-dot s-done"></span>已完成 <span class="sp-count">2</span></div>
+            <div class="status-pill" data-status="other"><span class="status-dot s-other"></span>其他 <span class="sp-count">2</span></div>
+          </div>
+        </div>
+        <div class="task-list-card">
+        
+        <div class="tv-item" data-stage="proposal" data-status="pending" onclick="alert('打开：提交开题报告（孙磊）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">提交开题报告 <span class="stage-tag-sm">开题报告</span></div>
+            <div class="tv-meta">
+              <span><b>孙磊</b> / 2021010108</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="边缘计算在智慧城中的应用研究">边缘计算在智慧城中的应用研究</span><span class="meta-sep">·</span><span>截止 07-05（剩 12 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-pending">待提交</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：提交开题报告（孙磊）')">去提交</button>
+        </div>
+
+        <div class="tv-item" data-stage="midterm" data-status="pending" onclick="alert('打开：提交中期材料（马超）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">提交中期材料 <span class="stage-tag-sm">中期检查</span></div>
+            <div class="tv-meta">
+              <span><b>马超</b> / 2021010110</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="智能交通信号灯优化算法研究">智能交通信号灯优化算法研究</span><span class="meta-sep">·</span><span class="dim">截止日期未设</span>
+            </div>
+          </div>
+          <span class="tv-status st-pending">待提交</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：提交中期材料（马超）')">去提交</button>
+        </div>
+
+        <div class="tv-item" data-stage="writing" data-status="pending" onclick="alert('打开：提交论文初稿（黄蕾）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">提交论文初稿 <span class="stage-tag-sm">论文撰写</span></div>
+            <div class="tv-meta">
+              <span><b>黄蕾</b> / 2021010111</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="区块链智能合约的安全性研究">区块链智能合约的安全性研究</span><span class="meta-sep">·</span><span>截止 07-10（剩 17 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-pending">待提交</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：提交论文初稿（黄蕾）')">去提交</button>
+        </div>
+
+        <div class="tv-item" data-stage="topic" data-status="review" onclick="alert('打开：审阅选题（吴昊）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">审阅选题申请 <span class="stage-tag-sm">选题</span></div>
+            <div class="tv-meta">
+              <span><b>吴昊</b> / 2021010112</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="5G网络下的视频编码优化研究">5G网络下的视频编码优化研究</span><span class="meta-sep">·</span><span>截止 06-25（剩 2 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-review">审核中</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：审阅选题（吴昊）')">去审核</button>
+        </div>
+
+        <div class="tv-item" data-stage="proposal" data-status="review" onclick="alert('打开：审阅开题报告（王强）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">审阅开题报告 <span class="stage-tag-sm">开题报告</span></div>
+            <div class="tv-meta">
+              <span><b>王强</b> / 2021010103</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="区块链技术在供应链管理中的研究">区块链技术在供应链管理中的研究</span><span class="meta-sep">·</span><span>截止 06-25（剩 2 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-review">审核中</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：审阅开题报告（王强）')">去审核</button>
+        </div>
+
+        <div class="tv-item" data-stage="midterm" data-status="review" onclick="alert('打开：审阅中期报告（李娜）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">审阅中期报告 <span class="stage-tag-sm">中期检查</span></div>
+            <div class="tv-meta">
+              <span><b>李娜</b> / 2021010102</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="深度学习在医学影像诊断中的应用研究">深度学习在医学影像诊断中的应用研究</span><span class="meta-sep">·</span><span>截止 06-28（剩 5 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-review">审核中</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：审阅中期报告（李娜）')">去审核</button>
+        </div>
+
+        <div class="tv-item" data-stage="midterm" data-status="review" onclick="alert('打开：审阅中期报告（陈静）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">审阅中期报告 <span class="stage-tag-sm">中期检查</span></div>
+            <div class="tv-meta">
+              <span><b>陈静</b> / 2021010105</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="基于 NLP 的智能客服系统研究">基于 NLP 的智能客服系统研究</span><span class="meta-sep">·</span><span>截止 06-29（剩 6 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-review">审核中</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：审阅中期报告（陈静）')">去审核</button>
+        </div>
+
+        <div class="tv-item" data-stage="writing" data-status="review" onclick="alert('打开：审阅论文初稿（刘洋）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">审阅论文初稿 <span class="stage-tag-sm">论文撰写</span></div>
+            <div class="tv-meta">
+              <span><b>刘洋</b> / 2021010104</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="物联网智能家居系统的设计与实现">物联网智能家居系统的设计与实现</span><span class="meta-sep">·</span><span class="dim">截止日期未设</span>
+            </div>
+          </div>
+          <span class="tv-status st-review">审核中</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：审阅论文初稿（刘洋）')">去审核</button>
+        </div>
+
+        <div class="tv-item" data-stage="defense" data-status="done" onclick="alert('查看：答辩已通过（杨帆）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">答辩审阅 <span class="stage-tag-sm">答辩</span></div>
+            <div class="tv-meta">
+              <span><b>杨帆</b> / 2021010106</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="云计算环境下的数据安全研究">云计算环境下的数据安全研究</span><span class="meta-sep">·</span><span class="dim">已完成</span>
+            </div>
+          </div>
+          <span class="tv-status st-done">已完成</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('查看：答辩已通过（杨帆）')">查看</button>
+        </div>
+
+        <div class="tv-item" data-stage="proposal" data-status="done" onclick="alert('查看：开题已通过（赵敏）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">开题报告审阅 <span class="stage-tag-sm">开题报告</span></div>
+            <div class="tv-meta">
+              <span><b>赵敏</b> / 2021010107</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="推荐算法在电商平台中的应用">推荐算法在电商平台中的应用</span><span class="meta-sep">·</span><span class="dim">已完成</span>
+            </div>
+          </div>
+          <span class="tv-status st-done">已完成</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('查看：开题已通过（赵敏）')">查看</button>
+        </div>
+
+        <div class="tv-item" data-stage="bizname" data-status="other" onclick="alert('打开：处理变更申请（张伟）')">
+          <span class="tv-dot urgent"></span>
+          <div class="tv-info">
+            <div class="tv-title">处理变更申请 <span class="stage-tag-sm">论文撰写</span></div>
+            <div class="tv-meta">
+              <span><b>张伟</b> / 2021010101</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="基于 SpringBoot 的在线教育平台设计与实现">基于 SpringBoot 的在线教育平台设计与实现</span><span class="meta-sep">·</span><span>截止 06-30（剩 7 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-other">其他</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：处理变更申请（张伟）')">去处理</button>
+        </div>
+
+        <div class="tv-item" data-stage="writing" data-status="other" onclick="alert('打开：催交论文初稿（周婷）')">
+          <span class="tv-dot normal"></span>
+          <div class="tv-info">
+            <div class="tv-title">催交论文初稿 <span class="stage-tag-sm">论文撰写</span></div>
+            <div class="tv-meta">
+              <span><b>周婷</b> / 2021010109</span>
+              <span class="meta-sep">·</span>
+              <span class="tv-topic" title="机器学习在金融风控中的研究">机器学习在金融风控中的研究</span><span class="meta-sep">·</span><span>截止 07-20（剩 27 天）</span>
+            </div>
+          </div>
+          <span class="tv-status st-other">其他</span>
+          <button class="tv-btn" onclick="event.stopPropagation();alert('打开：催交论文初稿（周婷）')">去处理</button>
+        </div>
+
+        <div class="tv-empty">该阶段暂无任务</div>
+        </div>
+      </div>
+      </div>
+
+      
+<div class="right-panel">
+      <!-- 快捷工具（竖向） -->
+      <div class="card shortcut-v-card">
+        <div class="card-header"><h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>快捷工具</h4></div>
+        <div class="sv-list">
+          <div class="sv-item" onclick="alert('打开维普慧导毕设助教')">
+            <div class="sv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+            <div class="sv-text"><div class="sv-title">维普慧导</div><div class="sv-desc">AI辅助毕业设计指导</div></div>
+          </div>
+          <div class="sv-item" onclick="alert('打开论文检测')">
+            <div class="sv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="sv-text"><div class="sv-title">我指导的学生</div><div class="sv-desc">学生批量管理与筛选</div></div>
+          </div>
+          <div class="sv-item" onclick="alert('打开文件下载')">
+            <div class="sv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+            <div class="sv-text"><div class="sv-title">文件下载</div><div class="sv-desc">论文模板及表单下载</div></div>
+          </div>
+          <div class="sv-item" onclick="alert('打开更多工具')">
+            <div class="sv-icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg></div>
+            <div class="sv-text"><div class="sv-title">更多工具</div><div class="sv-desc">查看更多功能入口</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 关键日期 v2 - 日历 -->
+      <div class="card key-date-card">
+        <div class="card-header">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>关键日期</h4>
+          <div class="kd-cal-nav">
+            <button class="kd-cal-nav-btn" onclick="calNav(-1)" title="上个月">‹</button>
+            <button class="kd-cal-nav-btn" onclick="calNav(1)" title="下个月">›</button>
+          </div>
+        </div>
+        <div class="kd-calendar">
+          <div class="kd-cal-header">
+            <div class="kd-cal-title" id="calTitle">2026年 6月</div>
+          </div>
+          <div class="kd-cal-weekdays">
+            <div class="kd-cal-wd">一</div>
+            <div class="kd-cal-wd">二</div>
+            <div class="kd-cal-wd">三</div>
+            <div class="kd-cal-wd">四</div>
+            <div class="kd-cal-wd">五</div>
+            <div class="kd-cal-wd weekend">六</div>
+            <div class="kd-cal-wd weekend">日</div>
+          </div>
+          <div class="kd-cal-grid" id="calGrid"></div>
+          <div class="kd-cal-footer">
+            <div class="kd-cal-legend">
+              <div class="kd-cal-legend-item"><span class="kd-cal-legend-dot" style="background:var(--destructive)"></span>紧急</div>
+              <div class="kd-cal-legend-item"><span class="kd-cal-legend-dot" style="background:var(--primary)"></span>截止</div>
+              <div class="kd-cal-legend-item"><span class="kd-cal-legend-dot" style="background:var(--success)"></span>已完成</div>
+            </div>
+            <div id="calNext"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 通知公告|站内信 -->
+      <div class="card notif-card">
+        <div class="card-header">
+          <h4><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>通知</h4>
+          <div class="tab-bar-sm">
+            <span class="tab-item-sm active" onclick="switchTabSm(this, 'tabAnnR')">公告</span>
+            <span class="tab-item-sm" onclick="switchTabSm(this, 'tabMsgR')">站内信</span>
+          </div>
+        </div>
+        <div class="card-body notif-body">
+          <div class="tab-content active" id="tabAnnR">
+            <div class="ann-item expanded" onclick="openAnnModal('开题报告提交截止提醒','教务处','2026-06-20','各教学单位：\n\n2026届毕业设计开题报告提交通道将于 6 月 30 日 23:59 关闭，请各指导教师及时督促学生完成提交。逾期未提交的学生将无法进入下一阶段流程。')">
+              <span class="ann-dot new"></span>
+              <span class="a-title">开题报告提交截止提醒</span>
+              <span class="a-date">06-20</span>
+              <div class="ann-summary">各教学单位：2026届毕业设计开题报告提交通道将于 6 月 30 日 23:59 关闭，请各指导教师及时督促学生完成提交。</div>
+            </div>
+            <div class="ann-item expanded" onclick="openAnnModal('答辩分组及场次安排公示','答辩委员会','2026-06-19','2026届本科毕业论文答辩定于 6 月 28 日至 6 月 29 日进行。请各答辩组成员提前 15 分钟到场签到。')">
+              <span class="ann-dot new"></span>
+              <span class="a-title">答辩分组及场次安排公示</span>
+              <span class="a-date">06-19</span>
+              <div class="ann-summary">2026届本科毕业论文答辩定于 6 月 28 日至 6 月 29 日进行。请各答辩组成员提前 15 分钟到场签到。</div>
+            </div>
+            <div class="ann-item expanded" onclick="openAnnModal('中期检查及线上评分工作启动','教务处','2026-06-17','2026届毕业设计中期检查工作已启动，各系于 6 月 25 日前完成线上评分及检查意见填写。')">
+              <span class="ann-dot new"></span>
+              <span class="a-title">中期检查及线上评分工作启动</span>
+              <span class="a-date">06-17</span>
+              <div class="ann-summary">2026届毕业设计中期检查工作已启动，各系于 6 月 25 日前完成线上评分及检查意见填写。</div>
+            </div>
+            <div class="ann-item" onclick="openAnnModal('系统维护通知（6月25日）','信息中心','2026-06-15','平台将于 6 月 25 日 02:00-06:00 进行维护升级，届时系统暂停访问。')">
+              <span class="ann-dot normal"></span>
+              <span class="a-title">系统维护通知（6月25日）</span><span class="a-date">06-15</span>
+            </div>
+            <div class="ann-item" onclick="openAnnModal('论文格式规范更新','教务处','2026-06-12','2026届毕业论文格式规范已更新，新增附录排版要求。请各指导教师和学生查阅最新规范文档。')">
+              <span class="ann-dot normal"></span>
+              <span class="a-title">论文格式规范更新</span><span class="a-date">06-12</span>
+            </div>
+            <div class="ann-item" onclick="openAnnModal('优秀论文评选通知','教务处','2026-06-10','2026届优秀毕业论文评选工作即将开始，各专业可推荐不超过 10% 的论文参评。')">
+              <span class="ann-dot normal"></span>
+              <span class="a-title">优秀论文评选通知</span><span class="a-date">06-10</span>
+            </div>
+          </div>
+          <div class="tab-content" id="tabMsgR">
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">王教授</span><span class="m-title">开题报告已收到，请按意见修改</span><span class="m-date">06-22</span>
+              <div class="ann-summary">您的开题报告已经审核，请根据批注意见进行修改后重新提交。</div>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">教务处</span><span class="m-title">答辩分组安排已发布，请及时查看</span><span class="m-date">06-19</span>
+              <div class="ann-summary">2026届答辩分组安排已发布到系统中，请及时登录查看您的答辩时间和场地。</div>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">系统</span><span class="m-title">课题变更申请已通过审核</span><span class="m-date">06-17</span>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">评阅教师</span><span class="m-title">请按时完成论文中期检查材料提交</span><span class="m-date">06-15</span>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">系主任</span><span class="m-title">课题复审已通过，请继续后续流程</span><span class="m-date">06-13</span>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">系统</span><span class="m-title">您的任务书已下达，请及时确认签署</span><span class="m-date">06-10</span>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">答辩秘书</span><span class="m-title">答辩场地确认请回复</span><span class="m-date">06-08</span>
+            </div>
+            <div class="msg-item" onclick="alert('打开站内信')">
+              <span class="m-from">图书馆</span><span class="m-title">论文查重免费名额开放申请</span><span class="m-date">06-05</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Announce Modal -->
+<div class="modal-overlay" id="annModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">通知标题</h3>
+      <button class="modal-close" onclick="closeAnnModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="meta-row"><span id="modalSource">发布部门：教务处</span><span id="modalDate">发布时间：2026-06-20</span></div>
+      <div class="content-text" id="modalContent"></div>
+    </div>
+    <div class="modal-footer"><button onclick="closeAnnModal()">知道了</button></div>
+  </div>
+</div>
+
+<script>
+function switchTabSm(el, tabId) {
+  var bar = el.closest('.card-header').querySelector('.tab-bar-sm');
+  if (!bar) return;
+  bar.querySelectorAll('.tab-item-sm').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  var parent = bar.closest('.card');
+  parent.querySelectorAll('.tab-content').forEach(function(tc){ tc.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+}
+function openAnnModal(title, source, date, body) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSource').textContent = '发布部门：' + source;
+  document.getElementById('modalDate').textContent = '发布时间：' + date;
+  document.getElementById('modalContent').innerHTML = body.replace(/\n/g, '<br>');
+  document.getElementById('annModal').classList.add('show');
+}
+function closeAnnModal() {
+  document.getElementById('annModal').classList.remove('show');
+}
+document.getElementById('annModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAnnModal();
+});
+
+// ========== 关键日期 v2 - 日历 ==========
+var TODAY = new Date(2026, 5, 23); // 2026-06-23
+var VIEW_YEAR = TODAY.getFullYear();
+var VIEW_MONTH = TODAY.getMonth();
+var SELECTED_DATE = new Date(2026, 5, 23); // 默认选中今天
+
+var DEADLINES = [
+  {date: '2026-05-20', label: '选题申请截止（黄磊）', status: 'done'},
+  {date: '2026-06-28', label: '审阅答辩稿（杨帆）', status: 'urgent'},
+  {date: '2026-06-28', label: '审阅中期报告（李娜）', status: 'urgent'},
+  {date: '2026-06-29', label: '审阅中期报告（陈静）', status: 'urgent'},
+  {date: '2026-06-30', label: '审阅开题报告（王强）', status: 'urgent'},
+  {date: '2026-06-30', label: '开题报告提交截止（系统级）', status: 'urgent'},
+  {date: '2026-07-15', label: '审阅论文初稿（刘洋）', status: 'normal'},
+  {date: '2026-07-20', label: '审阅论文初稿（周婷）', status: 'normal'},
+  {date: '2026-07-31', label: '论文初稿提交截止（系统级）', status: 'normal'},
+  {date: '2026-08-31', label: '论文定稿提交截止（系统级）', status: 'normal'},
+  {date: '2026-10-15', label: '答辩截止（系统级）', status: 'normal'},
+  {date: '2026-11-30', label: '论文归档截止（系统级）', status: 'normal'}
+];
+
+function parseDate(s) {
+  var p = s.split('-');
+  return new Date(parseInt(p[0],10), parseInt(p[1],10)-1, parseInt(p[2],10));
+}
+function dateKey(d) { return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate(); }
+function daysBetween(a, b) {
+  return Math.round((b - a) / 86400000);
+}
+
+function renderCalendar() {
+  var title = document.getElementById('calTitle');
+  title.textContent = VIEW_YEAR + '年 ' + (VIEW_MONTH + 1) + '月';
+
+  var grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  // 周一开始：周一是 weekday=1
+  var firstDay = new Date(VIEW_YEAR, VIEW_MONTH, 1);
+  var firstWeekday = firstDay.getDay(); // 0=周日
+  // 转化为周一开始：周日=6, 周一=0
+  var offset = (firstWeekday === 0) ? 6 : (firstWeekday - 1);
+  // 补上月末尾
+  var daysInMonth = new Date(VIEW_YEAR, VIEW_MONTH + 1, 0).getDate();
+  var prevMonthDays = new Date(VIEW_YEAR, VIEW_MONTH, 0).getDate();
+
+  // 索引deadlines by day
+  var dlMap = {};
+  DEADLINES.forEach(function(d) {
+    var dt = parseDate(d.date);
+    if (dt.getFullYear() === VIEW_YEAR && dt.getMonth() === VIEW_MONTH) {
+      var day = dt.getDate();
+      if (!dlMap[day]) dlMap[day] = [];
+      dlMap[day].push(d);
+    }
+  });
+
+  // 前置空白（上月末尾几天）
+  for (var i = offset - 1; i >= 0; i--) {
+    var d = prevMonthDays - i;
+    var c = document.createElement('div');
+    c.className = 'kd-cal-cell dim';
+    c.innerHTML = '<span class="day-num">' + d + '</span>';
+    grid.appendChild(c);
+  }
+  // 当月
+  for (var day = 1; day <= daysInMonth; day++) {
+    var c = document.createElement('div');
+    var cellDate = new Date(VIEW_YEAR, VIEW_MONTH, day);
+    var isToday = (cellDate.getFullYear() === TODAY.getFullYear() && cellDate.getMonth() === TODAY.getMonth() && cellDate.getDate() === TODAY.getDate());
+    var events = dlMap[day] || [];
+    var cls = 'kd-cal-cell';
+    if (events.length) {
+      cls += ' has-event';
+      // 紧急优先：取所有事件中状态最严重的
+      var hasUrgent = events.some(function(e){ return e.status === 'urgent'; });
+      var hasDone = events.every(function(e){ return e.status === 'done'; });
+      if (hasUrgent) cls += ' urgent';
+      if (hasDone) cls += ' done';
+      c.title = events.map(function(e){ return e.label; }).join(' · ');
+      c.style.cursor = 'pointer';
+      c.onclick = (function(d){
+        return function() { selectCalDate(d); };
+      })(new Date(VIEW_YEAR, VIEW_MONTH, day));
+    }
+    if (isToday) cls += ' today';
+    if (cellDate.getFullYear() === SELECTED_DATE.getFullYear() && cellDate.getMonth() === SELECTED_DATE.getMonth() && cellDate.getDate() === SELECTED_DATE.getDate()) cls += ' selected';
+    c.className = cls;
+    var evHtml = '';
+    if (events.length) {
+      var max = Math.min(events.length, 3);
+      for (var k = 0; k < max; k++) evHtml += '<span class="event-mark"></span>';
+      if (events.length > 3) evHtml += '<span class="event-more">+' + (events.length - 3) + '</span>';
+    }
+    c.innerHTML = '<span class="day-num">' + day + '</span>' + evHtml;
+    grid.appendChild(c);
+  }
+  // 末尾补齐到6行=42格
+  var totalCells = grid.children.length;
+  var tail = 42 - totalCells;
+  if (tail > 0 && totalCells < 36) tail = 36 - totalCells;
+  for (var j = 1; j <= tail; j++) {
+    var c = document.createElement('div');
+    c.className = 'kd-cal-cell dim';
+    c.innerHTML = '<span class="day-num">' + j + '</span>';
+    grid.appendChild(c);
+  }
+
+  renderCalNext();
+}
+
+function selectCalDate(d) {
+  SELECTED_DATE = d;
+  renderCalendar();
+}
+function renderCalNext() {
+  var nextBox = document.getElementById('calNext');
+  // 只展示当前选中日期当天的事项
+  var sd = new Date(SELECTED_DATE.getFullYear(), SELECTED_DATE.getMonth(), SELECTED_DATE.getDate());
+  var items = DEADLINES.filter(function(e) {
+    var dt = parseDate(e.date);
+    return dt.getFullYear() === sd.getFullYear() && dt.getMonth() === sd.getMonth() && dt.getDate() === sd.getDate();
+  });
+  if (items.length === 0) {
+    var isToday = (sd.getFullYear() === TODAY.getFullYear() && sd.getMonth() === TODAY.getMonth() && sd.getDate() === TODAY.getDate());
+    var label = isToday ? '今天' : (sd.getMonth()+1) + '月' + sd.getDate() + '日';
+    nextBox.innerHTML = '<div class="kd-cal-next empty"><span>' + label + ' 无待办事项</span></div>';
+    return;
+  }
+  var html = '<div class="kd-cal-next-list">';
+  items.forEach(function(e) {
+    var md = (sd.getMonth() + 1) + '/' + sd.getDate();
+    var cls = e.status === 'urgent' ? 'urgent' : (e.status === 'done' ? 'done' : 'normal');
+    var tag = e.status === 'done' ? '已完成' : (e.status === 'urgent' ? '紧急' : '正常');
+    html += '<div class="kd-cal-next-item ' + cls + '" onclick="alert(\'打开：' + e.label + '\')">' +
+      '<div class="kd-cal-next-date">' + md + '</div>' +
+      '<div class="kd-cal-next-body">' +
+        '<div class="kd-cal-next-title">' + e.label + '</div>' +
+        '<div class="kd-cal-next-days">' + tag + '</div>' +
+      '</div>' +
+      '</div>';
+  });
+  html += '</div>';
+  nextBox.innerHTML = html;
+}
+
+function calNav(delta) {
+  VIEW_MONTH += delta;
+  if (VIEW_MONTH < 0) { VIEW_MONTH = 11; VIEW_YEAR--; }
+  if (VIEW_MONTH > 11) { VIEW_MONTH = 0; VIEW_YEAR++; }
+  // 切月后如果选中的日期不在当前月, 重置为今天
+  if (SELECTED_DATE.getFullYear() !== VIEW_YEAR || SELECTED_DATE.getMonth() !== VIEW_MONTH) {
+    SELECTED_DATE = new Date(TODAY.getFullYear(), TODAY.getMonth(), TODAY.getDate());
+  }
+  renderCalendar();
+}
+
+renderCalendar();
+
+// ========== 培养类型下拉 ==========
+function toggleVersionDD(e) {
+  e.stopPropagation();
+  var dd = document.getElementById('versionDD');
+  dd.classList.toggle('open');
+}
+function selectVersion(e, name) {
+  e.stopPropagation();
+  document.getElementById('versionLabel').textContent = name;
+  var items = document.querySelectorAll('.header-version-dd .v-item');
+  items.forEach(function(it){
+    it.classList.toggle('active', it.getAttribute('data-v') === name);
+  });
+  document.getElementById('versionDD').classList.remove('open');
+}
+document.addEventListener('click', function(){
+  var dd = document.getElementById('versionDD');
+  if (dd) dd.classList.remove('open');
+});
+
+// ========== 页面标签器 ==========
+function switchPageTab(el) {
+  var tabs = el.closest('.page-tabs').querySelectorAll('.page-tab');
+  tabs.forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  // 工作台 tab（带 .home class）切到 E02 多角色工作台
+  if (el.classList.contains('home')) {
+    console.log('切回多角色工作台（E02）');
+  }
+}
+
+// ========== 我的指导模块 - 学生卡片折叠/展开 ==========
+function toggleStudentCard(header) {
+  var card = header.closest('.student-card');
+  card.classList.toggle('expanded');
+}
+
+
+// ========== 我的指导模块 - 视图切换（学生/任务） ==========
+function switchGuideView(el, viewId) {
+  var tabs = el.closest('.fw-tabs');
+  if (tabs) tabs.querySelectorAll('.fw-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('studentsView').style.display = (viewId === 'students') ? 'block' : 'none';
+  document.getElementById('tasksView').style.display = (viewId === 'tasks') ? 'block' : 'none';
+}
+
+// ========== 任务视图 - 双维度筛选（业务×状态） ==========
+var currentStage = 'all';
+var currentStatus = 'all';
+
+function applyTaskFilter() {
+  var visible = 0;
+  document.querySelectorAll('#tasksView .tv-item').forEach(function(it) {
+    var stageMatch = (currentStage === 'all') || (it.dataset.stage === currentStage);
+    var statusMatch = (currentStatus === 'all') || (it.dataset.status === currentStatus);
+    var show = stageMatch && statusMatch;
+    it.style.display = show ? 'flex' : 'none';
+    if (show) visible++;
+  });
+  document.querySelector('#tasksView .tv-empty').style.display = (visible === 0) ? 'block' : 'none';
+}
+
+function filterTasks(stage) {
+  currentStage = stage;
+  document.querySelectorAll('#taskPills .task-pill').forEach(function(p) {
+    p.classList.toggle('active', p.dataset.stage === stage);
+  });
+  applyTaskFilter();
+}
+document.querySelectorAll('#taskPills .task-pill').forEach(function(p) {
+  p.addEventListener('click', function() { filterTasks(p.dataset.stage); });
+});
+
+function filterByStatus(status) {
+  currentStatus = status;
+  document.querySelectorAll('#statusPills .status-pill').forEach(function(p) {
+    p.classList.toggle('active', p.dataset.status === status);
+  });
+  applyTaskFilter();
+}
+document.querySelectorAll('#statusPills .status-pill').forEach(function(p) {
+  p.addEventListener('click', function() { filterByStatus(p.dataset.status); });
+});
+</script>
+</body>
+</html>

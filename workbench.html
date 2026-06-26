@@ -1,0 +1,682 @@
+﻿<!DOCTYPE html>
+<html lang=zh-CN>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<title>工作台 - VGMS维普毕业论文(设计)管理系统</title>
+<style>
+:root{--primary:#145bff;--primary-light:#e5edff;--accent:#f0f2ff;--success:#57d188;--warning:#efbd48;--destructive:#ff3860;--bg:#edf3fe;--card-bg:#fff;--text-primary:#030712;--text-secondary:#606266;--text-muted:#909399;--border:#e5e7eb;--radius:0.25rem;--shadow:0 1px 3px rgba(0,0,0,0.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text-primary);font-size:14px;line-height:1.5715;min-width:1280px}
+
+.header{height:56px;background:var(--card-bg);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.header-brand{font-size:16px;font-weight:700;color:var(--text-primary);letter-spacing:-0.5px}
+.header-right{display:flex;align-items:center;gap:8px}
+.user-menu{position:relative;display:flex;align-items:center;gap:8px;padding:4px 12px;border-radius:var(--radius);cursor:pointer;transition:background 0.2s}
+.user-menu:hover{background:var(--accent)}
+.user-menu .u-avatar{width:28px;height:28px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px}
+.user-menu .u-name{font-size:13px;font-weight:500}
+.logout-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;margin-left:12px;border-radius:4px;font-size:13px;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;user-select:none}
+.logout-btn:hover{background:var(--accent);color:var(--destructive)}
+.logout-btn svg{width:14px;height:14px;flex-shrink:0}
+
+.three-col{display:flex;gap:14px;padding:14px 24px 24px;align-items:flex-start}
+
+.left-panel{width:230px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;position:sticky;top:14px}
+.left-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.profile-section{padding:18px 16px 14px;text-align:center}
+.profile-avatar{width:48px;height:48px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;margin:0 auto 8px}
+.profile-name{font-weight:600;font-size:16px;margin-bottom:2px}
+.profile-account{font-size:12px;color:var(--text-muted);margin-bottom:4px}
+.profile-school{font-size:12px;color:var(--text-secondary)}
+.profile-divider{height:1px;background:var(--border);margin:0 16px}
+.phase-badge{font-size:12px;color:var(--warning);background:#fffbe6;padding:6px 10px;border-radius:6px;display:flex;align-items:center;gap:6px;justify-content:center;margin:12px 16px 0}
+.phase-badge svg{width:14px;height:14px;flex-shrink:0}
+.role-section{padding:12px 16px 0}
+.role-section-title{font-size:11px;color:var(--text-muted);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between}
+.role-section-title .total{color:var(--primary);font-weight:600;font-size:11px}
+.role-list{display:flex;flex-direction:column;gap:3px}
+.role-item{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:6px;font-size:13px;cursor:pointer;color:var(--text-secondary);text-decoration:none;transition:all 0.15s;border:1px solid transparent}
+.role-item:hover{background:var(--accent);border-color:var(--border)}
+.role-item.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.role-item .r-count{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:10px;font-size:11px}
+.role-item.active .r-count{background:rgba(255,255,255,0.25);color:#fff}
+.role-item:not(.active) .r-count{background:#f3f4f6;color:var(--text-muted)}
+.role-item:not(.active) .r-count.has-todo{background:var(--destructive);color:#fff}
+.enter-row{padding:12px 16px}
+.enter-btn{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;padding:9px 0;background:var(--primary);color:#fff;border:none;border-radius:6px;font-size:13px;cursor:pointer;white-space:nowrap;overflow:hidden}
+.enter-btn:hover{opacity:0.9}
+.enter-btn .highlight-role{font-weight:600;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;vertical-align:bottom}
+
+.center-panel{flex:1;min-width:0}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+.card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;scroll-margin-top:14px}
+.card-header{padding:12px 14px 0;display:flex;align-items:center;justify-content:space-between}
+.card-header .left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+.role-badge{font-size:11px;font-weight:600;color:#fff;padding:2px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.role-badge.dean{background:#145bff}
+.role-badge.advisor{background:#00a854}
+.title-group{display:flex;align-items:center;gap:6px;min-width:0}
+.title-group h3{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title-group .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:10px;font-size:11px;font-weight:500;flex-shrink:0}
+.title-group .badge.danger{background:#fff0f0;color:var(--destructive)}
+.title-group .badge.warning{background:#fff7e6;color:var(--warning)}
+.card-header .right-link{font-size:12px;color:var(--primary);cursor:pointer;white-space:nowrap;flex-shrink:0;text-decoration:none}
+
+.card-body{padding:8px 14px 0;flex:1;max-height:310px;overflow:hidden;position:relative;transition:max-height 0.3s ease}
+.card-body.expanded{max-height:520px;overflow-y:auto}
+.card-body.has-more::after{content:'';position:absolute;left:0;right:0;bottom:0;height:40px;background:linear-gradient(transparent,#fff);pointer-events:none;transition:opacity 0.3s}
+.card-body.expanded.has-more::after{opacity:0}
+.card-footer{padding:0 14px 10px}
+.view-all{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 0;color:var(--primary);font-size:12px;cursor:pointer;border-top:1px solid #f3f4f6;user-select:none}
+.view-all:hover{opacity:0.8}
+
+.todo-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f3f4f6}
+.todo-item:last-child{border-bottom:none}
+.todo-item.hidden-item{display:none}
+.todo-info{flex:1;min-width:0}
+.todo-info .topic{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.todo-info .topic.no-topic{color:var(--text-muted);font-style:italic;font-weight:400}
+.todo-info .details{font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.todo-info .details .urgent{color:var(--destructive);font-weight:500}
+.todo-info .details .soon{color:var(--warning);font-weight:500}
+.todo-info .details .no-deadline{color:var(--text-muted);font-style:italic}
+.todo-action-btn{padding:3px 12px;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:12px;cursor:pointer;border:none;white-space:nowrap;flex-shrink:0}
+.todo-action-btn:hover{opacity:0.85}
+.todo-action-btn.immediate{background:var(--success)}
+.todo-action-btn.immediate:hover{opacity:0.85}
+
+.right-panel{width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:12px;position:sticky;top:14px}
+.announce-card{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 16px}
+.announce-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.announce-header h4{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+.announce-header .link{font-size:12px;color:var(--primary);cursor:pointer;text-decoration:none}
+.ann-item{cursor:pointer;transition:background 0.15s;padding:8px 0;border-bottom:1px solid #f3f4f6}
+.ann-item:last-child{border-bottom:none}
+.ann-item:hover{background:#fafbff}
+.ann-main{display:flex;align-items:flex-start;gap:8px}
+.ann-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.ann-dot.new{background:var(--destructive)}
+.ann-dot.normal{background:var(--primary)}
+.ann-content{flex:1;min-width:0}
+.ann-content .ann-title{font-size:12px;color:var(--text-primary);line-height:1.4;display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.ann-content .ann-title span:first-child{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ann-content .ann-date{font-size:11px;color:var(--text-muted);flex-shrink:0}
+.ann-content .ann-body{font-size:12px;color:var(--text-secondary);line-height:1.6;margin-top:4px}
+
+.ai-icon{width:36px;height:36px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff;font-size:16px}
+.ai-text{flex:1}
+.ai-text .name{font-weight:600;font-size:13px}
+.ai-text .desc{font-size:11px;color:var(--text-muted);margin-top:1px}
+
+/* 弹窗 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card-bg);border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,0.18);width:480px;max-width:90vw;max-height:70vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border)}
+.modal-header h3{font-size:15px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modal-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;border:none;background:transparent;cursor:pointer;color:var(--text-muted);font-size:18px;flex-shrink:0}
+.modal-close:hover{background:var(--accent)}
+.modal-body{padding:20px;overflow-y:auto;flex:1}
+.modal-body .meta-row{display:flex;gap:16px;margin-bottom:14px;font-size:12px;color:var(--text-muted)}
+.modal-body .meta-row span{display:flex;align-items:center;gap:4px}
+.modal-body .content-text{font-size:14px;line-height:1.8;color:var(--text-primary)}
+.modal-body .content-text p{margin-bottom:10px}
+.modal-footer{padding:12px 20px;border-top:1px solid var(--border);text-align:right}
+.modal-footer button{padding:6px 20px;border-radius:var(--radius);border:none;font-size:13px;cursor:pointer;background:var(--primary);color:#fff}
+.modal-footer button:hover{opacity:0.9}
+/* 卡片高亮 */
+.card-highlight { box-shadow: 0 0 0 2px var(--primary), 0 2px 12px rgba(20,91,255,0.25); transition: box-shadow 0.3s ease; animation: cardPulse 0.6s ease-out; }
+@keyframes cardPulse { 0%{transform:scale(1.01)} 50%{transform:scale(1)} 100%{transform:scale(1)} }
+
+/* 版本块 */
+.version-block{padding:12px 16px 0;display:flex;flex-direction:column;gap:8px}
+.v-block{border:1px solid var(--border);border-radius:6px;padding:8px 10px;cursor:pointer;transition:all 0.15s;background:var(--card-bg)}
+.v-block:hover{border-color:var(--primary-light)}
+.v-block.active{border-color:var(--primary);background:var(--primary-light)}
+.v-block-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.v-name{font-size:12px;font-weight:600;color:var(--text-primary)}
+.v-block.active .v-name{color:var(--primary)}
+.v-count{font-size:11px;color:var(--text-muted);background:#f3f4f6;padding:1px 6px;border-radius:8px;font-weight:500}
+.v-block.active .v-count{background:var(--primary);color:#fff}
+.v-chips{display:flex;flex-wrap:wrap;gap:4px}
+.v-chip{font-size:11px;padding:2px 8px;border-radius:10px;background:#f3f4f6;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;user-select:none}
+.v-chip:hover{background:var(--primary-light);color:var(--primary)}
+.v-chip.active{background:var(--primary);color:#fff;font-weight:500}
+/* loading 脉冲块 */
+.r-count.spinner{width:14px;height:14px;border-radius:50%;border:2px solid #e5e7eb;border-top-color:var(--primary);animation:spin 0.8s linear infinite;padding:0;background:transparent}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">VGMS 维普毕业论文（设计）管理系统</div>
+  <div class="header-right">
+    <div class="user-menu">
+      <div class="u-avatar">测</div>
+      <span class="u-name">测试</span>
+      <div class="logout-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>退出登录</div>
+    </div>
+  </div>
+</div>
+
+<div class="three-col">
+
+  <!-- ====== 左栏 ====== -->
+  <div class="left-panel">
+    <div class="left-card">
+      <div class="profile-section">
+        <div class="profile-avatar">测</div>
+        <div class="profile-name">测试</div>
+        <div class="profile-account">10010_ces</div>
+        <div class="profile-school">演示学校</div>
+      </div>
+      <div class="version-block" id="versionBlock">
+        <div class="v-block active" data-version="ben" onclick="selectVersion('ben')">
+          <div class="v-block-top"><span class="v-name">本科生版</span><span class="v-count">23</span></div>
+          <div class="v-chips">
+            <span class="v-chip active" onclick="selectJie(event,'ben','2026 届')">2026 届</span>
+          </div>
+        </div>
+        <div class="v-block" data-version="jxj" onclick="selectVersion('jxj')">
+          <div class="v-block-top"><span class="v-name">继教版</span><span class="v-count">12</span></div>
+          <div class="v-chips">
+            <span class="v-chip active" onclick="selectJie(event,'jxj','2026 届春季')">2026 届春季</span>
+            <span class="v-chip" onclick="selectJie(event,'jxj','2026 届秋季')">2026 届秋季</span>
+          </div>
+        </div>
+        <div class="v-block" data-version="yj" onclick="selectVersion('yj')">
+          <div class="v-block-top"><span class="v-name">研究生版</span><span class="v-count">0</span></div>
+          <div class="v-chips">
+            <span class="v-chip active" onclick="selectJie(event,'yj','2026 届')">2026 届</span>
+          </div>
+        </div>
+      </div>
+      <div class="profile-divider"></div>
+      <div class="role-section">
+        <div class="role-section-title">
+          <span>角色列表（<strong style="color:var(--text-primary);">7</strong>）</span>
+          <span class="total">共 <strong>23</strong> 项待办</span>
+        </div>
+        <div class="role-list" id="roleList">
+          <a href="#card-dean-topic" class="role-item active" data-role="系主任"><span>系主任</span><span class="r-count has-todo">14</span></a>
+          <a href="#card-advisor" class="role-item" data-role="指导教师"><span>指导教师</span><span class="r-count has-todo">9</span></a>
+          <div class="role-item" style="cursor:default;"><span>教学秘书</span><span class="r-count">0</span></div>
+          <div class="role-item" style="cursor:default;"><span>评阅教师</span><span class="r-count">0</span></div>
+          <div class="role-item" style="cursor:default;"><span>答辩组员</span><span class="r-count">0</span></div>
+          <div class="role-item" style="cursor:default;"><span>答辩秘书</span><span class="r-count spinner"></span></div>
+          <div class="role-item" style="cursor:default;"><span>答辩组长</span><span class="r-count spinner"></span></div>
+        </div>
+      </div>
+      <div class="enter-row">
+        <button class="enter-btn">以<span class="highlight-role">「系主任」</span>身份进入系统 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 中间 ====== -->
+  <div class="center-panel">
+    <div class="card-grid">
+
+      <!-- 卡1：审核课题 7条 -->
+      <div class="card" id="card-dean-topic">
+        <div class="card-header">
+          <div class="left">
+            <span class="role-badge dean">系主任</span>
+            <div class="title-group"><h3>审核课题</h3><span class="badge danger">7</span></div>
+          </div>
+          <a href="#" class="right-link">前往处理 →</a>
+        </div>
+        <div class="card-body has-more" id="cardBody1">
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于深度学习的图像识别系统设计</div><div class="details"><span class="urgent">距截止 1 天</span> 杨24 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">电商平台用户行为分析</div><div class="details"><span class="urgent">距截止 1 天</span> 教师01 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于物联网的智能家居系统</div><div class="details"><span class="soon">距截止 3 天</span> 张22 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">智慧校园一卡通系统优化</div><div class="details"><span>距截止 8 天</span> ltt4 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">社交网络情感分析研究</div><div class="details"><span class="no-deadline">待审核</span> ltt3 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item hidden-item"><div class="todo-info"><div class="topic no-topic">（未填写课题名称）</div><div class="details"><span class="no-deadline">待审核</span> ltt1 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item hidden-item"><div class="todo-info"><div class="topic">多媒体教学资源管理系统</div><div class="details"><span>距截止 12 天</span> 杨24 · 测试学院-测试专业</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+        </div>
+        <div class="card-footer"><div class="view-all" onclick="expandCard(this,'cardBody1')">查看全部 7 条 ↓</div></div>
+      </div>
+
+      <!-- 卡2：课题变更 4条 -->
+      <div class="card" id="card-dean-change">
+        <div class="card-header">
+          <div class="left">
+            <span class="role-badge dean">系主任</span>
+            <div class="title-group"><h3>课题变更</h3><span class="badge warning">4</span></div>
+          </div>
+          <a href="#" class="right-link">前往处理 →</a>
+        </div>
+        <div class="card-body">
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于区块链的供应链溯源系统</div><div class="details"><span class="soon">距截止 3 天</span> 杨24 · 测试班级</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于大数据的用户画像构建</div><div class="details"><span>距截止 7 天</span> lx14 · 测试班级</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于机器学习的智能推荐算法</div><div class="details"><span>距截止 10 天</span> lt32 · 测试班级</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic no-topic">（未填写课题名称）</div><div class="details"><span class="no-deadline">待审核</span> lx21 · 测试班级</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+        </div>
+      </div>
+
+      <!-- 卡3：审核任务书 3条 -->
+      <div class="card" id="card-dean-task">
+        <div class="card-header">
+          <div class="left">
+            <span class="role-badge dean">系主任</span>
+            <div class="title-group"><h3>审核任务书</h3><span class="badge warning">3</span></div>
+          </div>
+          <a href="#" class="right-link">前往处理 →</a>
+        </div>
+        <div class="card-body">
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于物联网的智慧农业系统</div><div class="details"><span class="soon">距截止 6 天</span> 杨20 · 指导老师：杨教授</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于深度学习的图像识别系统</div><div class="details"><span>距截止 4 天</span> 杨24 · 指导老师：王教授</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">社交网络情感分析研究</div><div class="details"><span class="no-deadline">待审核</span> ltt3 · 指导老师：刘教授</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+        </div>
+      </div>
+
+      <!-- 卡4：学生选题审核 6条 -->
+      <div class="card" id="card-advisor">
+        <div class="card-header">
+          <div class="left">
+            <span class="role-badge advisor">指导教师</span>
+            <div class="title-group"><h3>学生选题审核</h3><span class="badge warning">6</span></div>
+          </div>
+          <a href="#" class="right-link">前往处理 →</a>
+        </div>
+        <div class="card-body has-more" id="cardBody4">
+          <div class="todo-item"><div class="todo-info"><div class="topic">移动端校园导航应用开发</div><div class="details"><span class="soon">距截止 4 天</span> 王小明 · 计算机科学与技术</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">在线学习平台推荐算法设计</div><div class="details"><span>距截止 7 天</span> 李思远 · 计算机科学与技术</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于Spring Boot的实验室管理系统</div><div class="details"><span class="urgent">距截止 2 天</span> 陈雅文 · 软件工程</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">校园地图导航微信小程序</div><div class="details"><span>距截止 5 天</span> 赵思远 · 软件工程</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic no-topic">（未填写课题名称）</div><div class="details"><span class="no-deadline">待审核</span> 刘文杰 · 计算机科学与技术</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item hidden-item"><div class="todo-info"><div class="topic">基于微信小程序的社团管理平台</div><div class="details"><span>距截止 9 天</span> 周小红 · 软件工程</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+        </div>
+        <div class="card-footer"><div class="view-all" onclick="expandCard(this,'cardBody4')">查看全部 6 条 ↓</div></div>
+      </div>
+
+      <!-- 卡5：开题报告审核 3条 -->
+      <div class="card" id="card-advisor-report">
+        <div class="card-header">
+          <div class="left">
+            <span class="role-badge advisor">指导教师</span>
+            <div class="title-group"><h3>开题报告审核</h3><span class="badge warning">3</span></div>
+          </div>
+          <a href="#" class="right-link">前往处理 →</a>
+        </div>
+        <div class="card-body">
+          <div class="todo-item"><div class="todo-info"><div class="topic">移动端校园导航应用开发</div><div class="details"><span class="no-deadline">待审核</span> 王小明 · 计算机科学与技术</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">在线学习平台推荐算法设计</div><div class="details"><span class="no-deadline">待审核</span> 李思远 · 计算机科学与技术</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+          <div class="todo-item"><div class="todo-info"><div class="topic">基于Spring Boot的实验室管理系统</div><div class="details"><span>距截止 10 天</span> 陈雅文 · 软件工程</div></div><button class="todo-action-btn immediate">立即审核</button></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== 右栏 ====== -->
+  <div class="right-panel">
+    <div class="announce-card">
+      <div class="announce-header">
+        <h4><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>通知公告</h4>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="2026届毕设开题报告提交截止提醒" data-date="2026-06-20" data-source="教务处" data-body="各教学单位：\n\n2026届毕业设计（论文）开题报告提交通道将于 6 月 30 日 23:59 正式关闭，请各指导教师督促所指导学生在截止日期前完成开题报告的撰写与系统提交工作。\n\n逾期未提交的学生将无法进入下一阶段流程，责任自负。如有特殊情况，请提前向所在系部提交延期申请。">
+        <div class="ann-main">
+          <span class="ann-dot new"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>2026届毕设开题报告提交截止提醒</span><span class="ann-date">06-20</span></div>
+            <div class="ann-body">请各指导教师督促学生于 6 月 30 日前完成开题报告提交，逾期系统将自动关闭提交入口。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="本科毕业论文答辩分组及场次安排公示" data-date="2026-06-19" data-source="答辩委员会" data-body="各教学单位、全体毕业生：\n\n2026届本科毕业论文答辩定于 6 月 28 日至 6 月 29 日进行，现将分组安排及场次信息公示如下：\n\n一、答辩分组名单及时间安排详见附件；\n二、请各答辩组成员提前 15 分钟到场签到；\n三、学生须携带论文定稿打印件 3 份及答辩 PPT。\n\n如有异议，请于 6 月 23 日前向教务处反映。">
+        <div class="ann-main">
+          <span class="ann-dot new"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>本科毕业论文答辩分组及场次安排公示</span><span class="ann-date">06-19</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="启动毕设中期检查及线上评分工作" data-date="2026-06-17" data-source="教务处" data-body="各教学单位：\n\n2026届毕业设计（论文）中期检查工作现已启动，请各系于 6 月 25 日前完成线上评分及检查意见填写。\n\n请指导教师登录系统查看所指导学生的中期进展报告，并给出相应评分和指导意见。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>启动毕设中期检查及线上评分工作</span><span class="ann-date">06-17</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="系统维护通知" data-date="2026-06-15" data-source="信息中心" data-body="全体师生：\n\n为保障系统稳定运行，平台将于 6 月 25 日凌晨 02:00 至 06:00 进行例行维护升级，届时系统将暂停访问。\n\n请师生提前安排好相关操作，维护完成后系统将自动恢复。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>系统维护通知（6月25日 02:00-06:00）</span><span class="ann-date">06-15</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="重申毕业论文撰写规范与格式要求" data-date="2026-06-14" data-source="教务处" data-body="全体毕业生及指导教师：\n\n近期发现部分毕业论文存在格式不规范、引用不标注等问题，现重申如下要求：\n\n一、论文格式须严格参照《本科毕业论文撰写规范（2026版）》执行；\n二、查重率不得超过 30%，超过者不予安排答辩；\n三、请指导教师认真把关，确保论文质量。\n\n详细规范请查阅系统内"文档中心"栏目。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>重申毕业论文撰写规范与格式要求</span><span class="ann-date">06-14</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="2026届毕设论文查重检测通道开放通知" data-date="2026-06-12" data-source="教务处" data-body="全体毕业生：\n\n2026届毕业设计（论文）查重检测通道现已正式开放，相关事宜通知如下：\n\n一、每位学生拥有 2 次免费查重机会，超出部分需自费；\n二、查重结果将作为答辩资格审核依据，请合理安排查重时间；\n三、查重通过率低于 30% 方可进入答辩环节。\n\n如有疑问，请联系教务处。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>2026届毕设论文查重检测通道开放通知</span><span class="ann-date">06-12</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="关于做好2026届毕业论文（设计）学术不端检测的通知" data-date="2026-06-10" data-source="教务处" data-body="各教学单位：\n\n为加强学术诚信建设，2026届毕业论文（设计）将继续开展学术不端检测工作，现将相关安排通知如下：\n\n一、检测范围：全体应届毕业生；\n二、检测时间：6 月 15 日至 6 月 30 日；\n三、检测结果处理：查重率≤30% 视为通过；30%<查重率≤50% 需修改后复检；查重率>50% 需重新撰写。\n\n请各单位做好组织工作。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>关于做好2026届毕业论文（设计）学术不端检测的通知</span><span class="ann-date">06-10</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="2026届毕业论文（设计）答辩委员会名单公示" data-date="2026-06-08" data-source="教务处" data-body="各教学单位：\n\n2026届毕业论文（设计）答辩委员会名单已确定，现予以公示：\n\n一、各系答辩委员会由 5-7 名教师组成，设组长 1 名、秘书 1 名；\n二、答辩委员会成员应具备副高及以上职称或博士学位；\n三、具体名单详见附件，请各单位及时通知相关教师。\n\n公示期 3 个工作日，如有异议请向教务处反映。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>2026届毕业论文（设计）答辩委员会名单公示</span><span class="ann-date">06-08</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="2026届毕业论文（设计）成绩评定办法" data-date="2026-06-05" data-source="教务处" data-body="各教学单位、指导教师：\n\n2026届毕业论文（设计）成绩评定办法如下：\n\n一、成绩构成：指导教师评分 30% + 评阅教师评分 20% + 答辩成绩 50%；\n二、成绩等级：优秀（90-100）、良好（80-89）、中等（70-79）、及格（60-69）、不及格（<60）；\n三、成绩录入截止时间：7 月 5 日 23:59，逾期不予受理。\n\n请相关教师按时完成成绩评定与录入。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>2026届毕业论文（设计）成绩评定办法</span><span class="ann-date">06-05</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ann-item" onclick="openAnnModal(this)" data-title="2026届毕业生实习材料归档要求" data-date="2026-06-02" data-source="教务处" data-body="各教学单位、全体毕业生：\n\n2026届毕业生实习材料归档工作即将开始，现将相关要求通知如下：\n\n一、归档材料包括：实习鉴定表、实习报告、实习周记等；\n二、材料须用黑色签字笔填写，字迹工整、内容完整；\n三、归档截止时间：6 月 20 日前，逾期不予办理。\n\n具体归档流程请咨询所在系部教学秘书。">
+        <div class="ann-main">
+          <span class="ann-dot normal"></span>
+          <div class="ann-content">
+            <div class="ann-title"><span>2026届毕业生实习材料归档要求</span><span class="ann-date">06-02</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 通知详情弹窗 -->
+<div class="modal-overlay" id="annModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3 id="modalTitle">通知标题</h3>
+      <button class="modal-close" onclick="closeAnnModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="meta-row">
+        <span id="modalSource">发布部门：教务处</span>
+        <span id="modalDate">发布时间：2026-06-20</span>
+      </div>
+      <div class="content-text" id="modalContent"></div>
+    </div>
+    <div class="modal-footer">
+      <button onclick="closeAnnModal()">知道了</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// 4 套数据：版本+届 组合
+const DATASETS = {
+  'ben|2026 届': {
+    roleCount: 7,
+    totalText: '23',
+    roles: [
+      { name: '系主任', count: 14, type: 'dean', clickable: true, active: true },
+      { name: '指导教师', count: 9, type: 'advisor', clickable: true, active: false },
+      { name: '教学秘书', count: 0, type: 'staff', clickable: false },
+      { name: '评阅教师', count: 0, type: 'reviewer', clickable: false },
+      { name: '答辩组员', count: 0, type: 'defense', clickable: false },
+      { name: '答辩秘书', loading: true, type: 'staff' },
+      { name: '答辩组长', loading: true, type: 'staff' }
+    ],
+    cards: [
+      { role: '系主任', title: '审核课题', count: 7, badge: 'danger' },
+      { role: '系主任', title: '课题变更', count: 4, badge: 'warning' },
+      { role: '系主任', title: '审核任务书', count: 3, badge: 'warning' },
+      { role: '指导教师', title: '学生选题审核', count: 6, badge: 'warning' },
+      { role: '指导教师', title: '开题报告审核', count: 3, badge: 'warning' }
+    ]
+  },
+  'jxj|2026 届春季': {
+    roleCount: 6,
+    totalText: '12',
+    roles: [
+      { name: '继教管理员', count: 5, type: 'dean', clickable: true, active: true },
+      { name: '指导教师', count: 4, type: 'advisor', clickable: true, active: false },
+      { name: '评阅教师', count: 3, type: 'reviewer', clickable: true, active: false },
+      { name: '答辩组员', count: 0, type: 'defense', clickable: false },
+      { name: '答辩秘书', loading: true, type: 'staff' },
+      { name: '答辩组长', loading: true, type: 'staff' }
+    ],
+    cards: [
+      { role: '继教管理员', title: '开题报告审核', count: 5, badge: 'warning' },
+      { role: '继教管理员', title: '中期检查审核', count: 3, badge: 'warning' },
+      { role: '继教管理员', title: '答辩资格审查', count: 2, badge: 'warning' },
+      { role: '指导教师', title: '学生选题审核', count: 1, badge: 'warning' },
+      { role: '评阅教师', title: '论文评阅', count: 1, badge: 'danger' }
+    ]
+  },
+  'jxj|2026 届秋季': {
+    roleCount: 5,
+    totalText: '8',
+    roles: [
+      { name: '继教管理员', count: 3, type: 'dean', clickable: true, active: true },
+      { name: '指导教师', count: 3, type: 'advisor', clickable: true, active: false },
+      { name: '评阅教师', count: 2, type: 'reviewer', clickable: true, active: false },
+      { name: '答辩秘书', loading: true, type: 'staff' },
+      { name: '答辩组长', loading: true, type: 'staff' }
+    ],
+    cards: [
+      { role: '继教管理员', title: '开题报告审核', count: 3, badge: 'warning' },
+      { role: '继教管理员', title: '中期检查审核', count: 2, badge: 'warning' },
+      { role: '指导教师', title: '学生选题审核', count: 2, badge: 'warning' },
+      { role: '评阅教师', title: '论文评阅', count: 1, badge: 'warning' }
+    ]
+  },
+  'yj|2026 届': {
+    roleCount: 4,
+    totalText: '0',
+    roles: [
+      { name: '研究生导师', count: 0, type: 'advisor', clickable: true, active: true },
+      { name: '答辩组员', count: 0, type: 'defense', clickable: true, active: false },
+      { name: '答辩秘书', loading: true, type: 'staff' },
+      { name: '答辩组长', loading: true, type: 'staff' }
+    ],
+    cards: [
+      { role: '研究生导师', title: '开题报告审核', count: 0, badge: 'warning' },
+      { role: '研究生导师', title: '中期检查', count: 0, badge: 'warning' },
+      { role: '答辩组员', title: '论文评阅', count: 0, badge: 'warning' }
+    ]
+  }
+};
+
+const ROLE_BADGE_CLASS = {
+  '系主任': 'dean',
+  '继教管理员': 'dean',
+  '指导教师': 'advisor',
+  '研究生导师': 'advisor',
+  '评阅教师': 'reviewer',
+  '答辩组员': 'defense',
+  '教学秘书': 'staff',
+  '答辩秘书': 'staff',
+  '答辩组长': 'staff'
+};
+const ROLE_BADGE_STYLE = {
+  'dean': '#145bff',
+  'advisor': '#00a854',
+  'reviewer': '#9b59b6',
+  'defense': '#efbd48',
+  'staff': '#909399'
+};
+
+let currentVersion = 'ben';
+let currentJie = '2026 届';
+
+function selectVersion(v) {
+  if (v === currentVersion) return;
+  currentVersion = v;
+  const vBlock = document.querySelector('.v-block[data-version="' + v + '"]');
+  const firstChip = vBlock.querySelector('.v-chip');
+  currentJie = firstChip.textContent.trim();
+  document.querySelectorAll('.v-block').forEach(function(b){ b.classList.remove('active'); });
+  vBlock.classList.add('active');
+  document.querySelectorAll('.v-block .v-chip').forEach(function(c){ c.classList.remove('active'); });
+  firstChip.classList.add('active');
+  renderDataset();
+}
+
+function selectJie(e, v, jie) {
+  e.stopPropagation();
+  if (v !== currentVersion) {
+    currentVersion = v;
+    document.querySelectorAll('.v-block').forEach(function(b){ b.classList.remove('active'); });
+    document.querySelector('.v-block[data-version="' + v + '"]').classList.add('active');
+  }
+  currentJie = jie;
+  const vBlock = document.querySelector('.v-block[data-version="' + v + '"]');
+  vBlock.querySelectorAll('.v-chip').forEach(function(c){ c.classList.remove('active'); });
+  e.target.classList.add('active');
+  renderDataset();
+}
+
+function renderDataset() {
+  const data = DATASETS[currentVersion + '|' + currentJie];
+  if (!data) return;
+  document.querySelector('.role-section-title .total strong').textContent = data.totalText;
+  const list = document.getElementById('roleList');
+  list.innerHTML = data.roles.map(function(r){
+    if (r.loading) {
+      return '<div class="role-item" style="cursor:default;"><span>' + r.name + '</span><span class="r-count spinner"></span></div>';
+    }
+    var cls = 'role-item';
+    if (r.active) cls += ' active';
+    var countCls = 'r-count' + (r.count > 0 ? ' has-todo' : '');
+    if (r.clickable) {
+      return '<a href="#card-' + r.type + '" class="' + cls + '" data-role="' + r.name + '"><span>' + r.name + '</span><span class="' + countCls + '">' + r.count + '</span></a>';
+    } else {
+      return '<div class="' + cls + '" style="cursor:default;"><span>' + r.name + '</span><span class="' + countCls + '">' + r.count + '</span></div>';
+    }
+  }).join('');
+  var active = data.roles.find(function(r){ return r.active; });
+  if (active) {
+    document.querySelector('.highlight-role').textContent = '「' + active.name + '」';
+  }
+  bindRoleClick();
+  renderCards(data.cards);
+}
+
+function renderCards(cardsData) {
+  const cardEls = document.querySelectorAll('.card-grid .card');
+  cardsData.forEach(function(c, i) {
+    if (i >= cardEls.length) return;
+    const el = cardEls[i];
+    const badge = el.querySelector('.role-badge');
+    badge.textContent = c.role;
+    const roleType = ROLE_BADGE_CLASS[c.role] || 'staff';
+    badge.className = 'role-badge ' + roleType;
+    badge.setAttribute('style', 'background:' + (ROLE_BADGE_STYLE[roleType] || '#909399'));
+    el.querySelector('.title-group h3').textContent = c.title;
+    const numBadge = el.querySelector('.title-group .badge');
+    numBadge.textContent = c.count;
+    numBadge.className = 'title-group badge ' + c.badge;
+    el.id = 'card-' + roleType;
+  });
+}
+
+function bindRoleClick() {
+  document.querySelectorAll('#roleList a').forEach(function(el){
+    el.addEventListener('click', function(){
+      document.querySelectorAll('.role-item').forEach(function(r){ r.classList.remove('active'); });
+      el.classList.add('active');
+      document.querySelector('.highlight-role').textContent = '「' + el.getAttribute('data-role') + '」';
+      setTimeout(function(){
+        var target = document.querySelector(el.getAttribute('href'));
+        if(target){
+          document.querySelectorAll('.card').forEach(function(c){ c.classList.remove('card-highlight'); });
+          target.classList.add('card-highlight');
+          setTimeout(function(){ target.classList.remove('card-highlight'); }, 2000);
+        }
+      }, 100);
+    });
+  });
+}
+
+function expandCard(btn, bodyId) {
+  var body = document.getElementById(bodyId);
+  var isExpanded = body.classList.contains('expanded');
+  if (!isExpanded) {
+    body.querySelectorAll('.hidden-item').forEach(function(el){ el.classList.remove('hidden-item'); });
+    body.classList.add('expanded');
+    btn.textContent = '收起 \u2191';
+  } else {
+    body.classList.remove('expanded');
+    var items = body.querySelectorAll('.todo-item');
+    var count = 0;
+    items.forEach(function(el){ count++; if(count > 5) el.classList.add('hidden-item'); });
+    var total = btn.textContent.match(/\d+/);
+    btn.textContent = '\u67e5\u770b\u5168\u90e8 ' + (total ? total[0] : items.length) + ' \u6761 \u2193';
+  }
+}
+
+document.querySelectorAll('#roleList a').forEach(function(el){
+  el.addEventListener('click', function(){
+    document.querySelectorAll('.role-item').forEach(function(r){ r.classList.remove('active'); });
+    el.classList.add('active');
+    document.querySelector('.highlight-role').textContent = '\u300c' + el.getAttribute('data-role') + '\u300d';
+    setTimeout(function(){
+      var target = document.querySelector(el.getAttribute('href'));
+      if(target){
+        document.querySelectorAll('.card').forEach(function(c){ c.classList.remove('card-highlight'); });
+        target.classList.add('card-highlight');
+        setTimeout(function(){ target.classList.remove('card-highlight'); }, 2000);
+      }
+    }, 100);
+  });
+});
+
+function openAnnModal(el) {
+  var title = el.getAttribute('data-title');
+  var date = el.getAttribute('data-date');
+  var source = el.getAttribute('data-source');
+  var body = el.getAttribute('data-body');
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalDate').textContent = '\u53d1\u5e03\u65f6\u95f4\uff1a' + date;
+  document.getElementById('modalSource').textContent = '\u53d1\u5e03\u90e8\u95e8\uff1a' + source;
+  document.getElementById('modalContent').innerHTML = body.replace(/\n/g, '<br>');
+  document.getElementById('annModal').classList.add('show');
+}
+function closeAnnModal() {
+  document.getElementById('annModal').classList.remove('show');
+}
+document.getElementById('annModal').addEventListener('click', function(e) {
+  if (e.target === this) closeAnnModal();
+});
+</script>
+
+</body>
+</html>
+
+
