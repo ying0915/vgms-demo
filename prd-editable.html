@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VGMS 毕业论文管理系统 PRD</title>
+<!-- EasyMDE for editing -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+<script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+<!-- Marked for markdown rendering -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+:root {
+  --primary: #1a3a5c;
+  --accent: #2c5f8a;
+  --bg: #fafbfc;
+  --card-bg: #ffffff;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-secondary: #57606a;
+  --table-header-bg: #f0f3f6;
+  --table-stripe: #f8f9fa;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", Georgia, "Times New Roman", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+/* Toolbar */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.toolbar-status {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 6px 16px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: transparent;
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+.btn-primary {
+  background: #2ea44f;
+  border-color: #2ea44f;
+}
+
+.btn-primary:hover {
+  background: #2c974b;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-edit {
+  background: rgba(255,255,255,0.15);
+}
+
+.btn-edit.active {
+  background: #f0ad4e;
+  border-color: #f0ad4e;
+  color: #fff;
+}
+
+/* Container */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* View mode styles */
+#view-content h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  margin: 0 0 8px 0;
+  padding-bottom: 16px;
+  border-bottom: 3px double var(--primary);
+}
+
+#view-content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 40px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+}
+
+#view-content h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--accent);
+  margin: 28px 0 12px 0;
+}
+
+#view-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 20px 0 8px 0;
+}
+
+#view-content blockquote {
+  background: var(--table-header-bg);
+  border-left: 4px solid var(--accent);
+  margin: 16px 0 24px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-radius: 0 6px 6px 0;
+}
+
+#view-content blockquote strong { color: var(--text); }
+
+#view-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}
+
+#view-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 24px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#view-content th {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border: 1px solid var(--primary);
+}
+
+#view-content td {
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  vertical-align: top;
+}
+
+#view-content tr:nth-child(even) td {
+  background: var(--table-stripe);
+}
+
+#view-content code {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 13px;
+  background: #eff1f3;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #c7254e;
+}
+
+#view-content ul, #view-content ol {
+  margin: 8px 0 16px 24px;
+}
+
+#view-content li { margin-bottom: 4px; }
+
+#view-content a { color: var(--accent); text-decoration: none; }
+#view-content a:hover { text-decoration: underline; }
+
+#view-content p {
+  margin: 10px 0;
+  text-align: justify;
+}
+
+/* Edit mode */
+#edit-container {
+  display: none;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 32px 80px;
+}
+
+.EasyMDEContainer {
+  font-family: "Noto Serif SC", Georgia, serif;
+}
+
+.EasyMDEContainer .CodeMirror {
+  font-size: 15px;
+  line-height: 1.8;
+  min-height: 500px;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.success { background: #2ea44f; }
+.toast.error { background: #d73a49; }
+.toast.info { background: var(--accent); }
+
+/* Token modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.show {
+  display: flex;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  max-width: 480px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.modal h3 {
+  font-size: 18px;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.modal p {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.modal input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: monospace;
+  margin-bottom: 16px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-actions button {
+  padding: 8px 20px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-actions .btn-save {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Loading spinner */
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Print */
+@media print {
+  .toolbar { display: none; }
+  body { font-size: 12px; background: #fff; }
+  .container { max-width: 100%; padding: 0; }
+  #view-content h2 { page-break-before: always; }
+  #view-content table { page-break-inside: avoid; }
+}
+
+@media (max-width: 640px) {
+  .container, #edit-container { padding: 20px 16px 60px; }
+  #view-content h1 { font-size: 22px; }
+  #view-content h2 { font-size: 18px; }
+  #view-content table { font-size: 13px; }
+  #view-content th, #view-content td { padding: 6px 8px; }
+  .toolbar { padding: 8px 16px; flex-wrap: wrap; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <div class="toolbar-left">
+    <span class="toolbar-title">VGMS 毕业论文管理系统 PRD</span>
+    <span class="toolbar-status" id="status-text">加载中...</span>
+  </div>
+  <div class="toolbar-right">
+    <button class="btn btn-edit" id="btn-edit" onclick="toggleEdit()" style="display:none">
+      ✏️ 编辑
+    </button>
+    <button class="btn btn-primary" id="btn-save" onclick="saveContent()" style="display:none">
+      💾 保存
+    </button>
+    <button class="btn" id="btn-token" onclick="showTokenModal()">
+      🔑 Token
+    </button>
+  </div>
+</div>
+
+<!-- View mode -->
+<div class="container" id="view-container">
+  <div id="view-content"></div>
+</div>
+
+<!-- Edit mode -->
+<div id="edit-container">
+  <textarea id="editor"></textarea>
+</div>
+
+<!-- Token modal -->
+<div class="modal-overlay" id="token-modal">
+  <div class="modal">
+    <h3>🔑 GitHub Token 设置</h3>
+    <p>用于保存编辑内容到 GitHub 仓库。Token 仅存储在你的浏览器本地，不会发送到其他服务器。</p>
+    <p style="font-size:12px;">获取方式：GitHub → Settings → Developer settings → Personal access tokens → 勾选 <code>repo</code> 权限</p>
+    <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxx">
+    <div class="modal-actions">
+      <button onclick="hideTokenModal()">取消</button>
+      <button class="btn-save" onclick="saveToken()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const REPO = 'ying0915/vgms-demo';
+const BRANCH = 'main';
+const FILE_PATH = 'prd-source.md';
+const RAW_URL = `https://raw.githubusercontent.com/${REPO}/${BRANCH}/${FILE_PATH}`;
+const API_URL = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+
+let easyMDE = null;
+let currentContent = '';
+let currentSha = '';
+let isEditing = false;
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  loadContent();
+  checkToken();
+});
+
+function checkToken() {
+  const token = localStorage.getItem('gh_token_vgms');
+  if (token) {
+    document.getElementById('btn-edit').style.display = '';
+    document.getElementById('btn-token').textContent = '🔑 ✓';
+  }
+}
+
+async function loadContent() {
+  try {
+    // Fetch raw markdown
+    const resp = await fetch(RAW_URL + '?t=' + Date.now());
+    if (!resp.ok) throw new Error('Failed to load markdown');
+    currentContent = await resp.text();
+
+    // Fetch SHA for update
+    const apiResp = await fetch(API_URL, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (apiResp.ok) {
+      const data = await apiResp.json();
+      currentSha = data.sha;
+    }
+
+    // Render markdown
+    renderMarkdown(currentContent);
+    document.getElementById('btn-edit').style.display = localStorage.getItem('gh_token_vgms') ? '' : 'none';
+    document.getElementById('status-text').textContent = '已加载';
+  } catch (e) {
+    document.getElementById('status-text').textContent = '加载失败';
+    showToast('加载文档失败: ' + e.message, 'error');
+  }
+}
+
+function renderMarkdown(md) {
+  const html = marked.parse(md);
+  document.getElementById('view-content').innerHTML = html;
+}
+
+function toggleEdit() {
+  isEditing = !isEditing;
+  const btnEdit = document.getElementById('btn-edit');
+  const btnSave = document.getElementById('btn-save');
+  const viewContainer = document.getElementById('view-container');
+  const editContainer = document.getElementById('edit-container');
+
+  if (isEditing) {
+    btnEdit.classList.add('active');
+    btnEdit.innerHTML = '✕ 取消';
+    btnSave.style.display = '';
+    viewContainer.style.display = 'none';
+    editContainer.style.display = 'block';
+
+    if (!easyMDE) {
+      easyMDE = new EasyMDE({
+        element: document.getElementById('editor'),
+        spellChecker: false,
+        autosave: { enabled: false },
+        placeholder: '输入 Markdown 内容...',
+        status: false,
+        toolbar: [
+          'bold', 'italic', 'heading', '|',
+          'quote', 'unordered-list', 'ordered-list', '|',
+          'link', 'table', '|',
+          'preview', 'side-by-side', 'fullscreen', '|',
+          'guide'
+        ],
+        minHeight: '500px'
+      });
+    }
+    easyMDE.value(currentContent);
+  } else {
+    btnEdit.classList.remove('active');
+    btnEdit.innerHTML = '✏️ 编辑';
+    btnSave.style.display = 'none';
+    viewContainer.style.display = 'block';
+    editContainer.style.display = 'none';
+  }
+}
+
+async function saveContent() {
+  const token = localStorage.getItem('gh_token_vgms');
+  if (!token) {
+    showTokenModal();
+    return;
+  }
+
+  const newContent = easyMDE.value();
+  const btnSave = document.getElementById('btn-save');
+  btnSave.disabled = true;
+  btnSave.innerHTML = '<span class="spinner"></span>保存中...';
+  document.getElementById('status-text').textContent = '保存中...';
+
+  try {
+    const body = {
+      message: 'Update PRD via web editor',
+      content: btoa(unescape(encodeURIComponent(newContent))),
+      sha: currentSha,
+      branch: BRANCH
+    };
+
+    const resp = await fetch(API_URL, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json();
+      throw new Error(err.message || 'Save failed');
+    }
+
+    const data = await resp.json();
+    currentSha = data.content.sha;
+    currentContent = newContent;
+
+    // Switch back to view mode and re-render
+    toggleEdit();
+    renderMarkdown(newContent);
+    document.getElementById('status-text').textContent = '已保存';
+    showToast('保存成功！GitHub Pages 将在 1-2 分钟后更新', 'success');
+  } catch (e) {
+    showToast('保存失败: ' + e.message, 'error');
+    document.getElementById('status-text').textContent = '保存失败';
+  } finally {
+    btnSave.disabled = false;
+    btnSave.innerHTML = '💾 保存';
+  }
+}
+
+function showTokenModal() {
+  const modal = document.getElementById('token-modal');
+  const input = document.getElementById('token-input');
+  const existing = localStorage.getItem('gh_token_vgms');
+  if (existing) input.value = existing;
+  modal.classList.add('show');
+}
+
+function hideTokenModal() {
+  document.getElementById('token-modal').classList.remove('show');
+}
+
+function saveToken() {
+  const token = document.getElementById('token-input').value.trim();
+  if (token) {
+    localStorage.setItem('gh_token_vgms', token);
+    document.getElementById('btn-edit').style.display = '';
+    document.getElementById('btn-token').textContent = '🔑 ✓';
+    showToast('Token 已保存', 'success');
+  }
+  hideTokenModal();
+}
+
+function showToast(msg, type = 'info') {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.className = `toast ${type} show`;
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
