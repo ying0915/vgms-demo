@@ -310,8 +310,104 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue"
 /* 其他业务分组标题 */
 .other-group-title{font-size:13px;font-weight:600;color:var(--text-secondary);padding:16px 0 8px;border-top:1px solid var(--border);margin-top:8px;display:flex;align-items:center;gap:6px}
 .other-group-title::before{content:'';width:3px;height:14px;background:var(--primary-light);border-radius:2px}
+
+/* === v4 新增样式：课题信息卡片重构 === */
+.project-header-bar{display:flex;align-items:center;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.project-header-bar .ph-item{font-size:13px;color:var(--text-primary);display:flex;align-items:center;gap:4px;white-space:nowrap}
+.project-header-bar .ph-item .ph-label{color:var(--text-muted);font-size:12px}
+.project-header-bar .ph-item .ph-value{font-weight:500}
+.project-header-bar .ph-sep{color:var(--border);margin:0 10px;font-size:16px;user-select:none}
+.info-section{border-bottom:1px solid var(--border);padding:12px 16px}
+.info-section:last-child{border-bottom:none}
+.is-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.is-title{font-size:13px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;gap:6px}
+.is-more{font-size:11px;color:var(--primary);cursor:pointer;padding:2px 8px;border-radius:4px;border:1px solid var(--primary-light);background:transparent;transition:all 0.15s;white-space:nowrap}
+.is-more:hover{background:var(--primary-light)}
+.is-empty{font-size:12px;color:var(--text-muted);font-style:italic;padding:6px 0}
+.defense-latest{display:flex;align-items:center;gap:8px;font-size:13px;flex-wrap:wrap}
+.defense-latest .dl-tag{font-size:11px;padding:2px 8px;border-radius:3px;background:var(--primary-light);color:var(--primary);font-weight:500}
+.defense-latest .dl-detail{color:var(--text-secondary);font-size:12px}
+.review-cards{display:flex;gap:10px;flex-wrap:wrap}
+.review-card{flex:1;min-width:200px;background:var(--bg);border-radius:6px;padding:10px 12px;border:1px solid var(--border)}
+.review-card .rc-title{font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.review-card .rc-title .rc-badge{font-size:10px;padding:1px 5px;border-radius:3px;background:#fff3e0;color:#e65100}
+.review-card .rc-text{font-size:12px;color:var(--text-secondary);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.score-cards{display:flex;gap:8px;flex-wrap:wrap}
+.score-card{flex:1;min-width:100px;background:var(--bg);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)}
+.score-card .sc-type{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+.score-card .sc-score{font-size:18px;font-weight:700;color:var(--primary)}
+.score-card .sc-grade{font-size:11px;color:var(--success);font-weight:500;margin-top:2px}
+.score-card .sc-nodata{font-size:11px;color:var(--text-muted);font-style:italic;margin-top:4px}
+
+/* === v4 弹窗样式 === */
+.detail-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:2000;align-items:center;justify-content:center}
+.detail-modal-overlay.show{display:flex}
+.detail-modal{background:var(--card-bg);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,0.2);width:700px;max-width:92vw;max-height:80vh;display:flex;flex-direction:column;overflow:hidden}
+.dm-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)}
+.dm-header h3{font-size:15px;font-weight:600;flex:1}
+.dm-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;border:none;background:transparent;cursor:pointer;color:var(--text-muted);font-size:18px;transition:all 0.15s}
+.dm-close:hover{background:var(--accent);color:var(--text-primary)}
+.dm-tabs{display:flex;border-bottom:1px solid var(--border);padding:0 20px;gap:0}
+.dm-tab{padding:10px 16px;font-size:13px;cursor:pointer;color:var(--text-muted);border-bottom:2px solid transparent;transition:all 0.15s;white-space:nowrap}
+.dm-tab:hover{color:var(--text-primary)}
+.dm-tab.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:500}
+.dm-body{padding:16px 20px;overflow-y:auto;flex:1}
+.dm-tab-content{display:none}
+.dm-tab-content.active{display:block}
+
+/* 答辩记录弹窗内 */
+.defense-group{margin-bottom:16px}
+.dg-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.dg-round-tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.dg-round-tab{padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);transition:all 0.15s}
+.dg-round-tab.active{color:var(--primary);background:var(--primary-light);border-color:var(--primary);font-weight:500}
+.dg-round-tab.expired{color:var(--text-muted);text-decoration:line-through}
+.dg-detail{background:var(--bg);border-radius:6px;padding:10px 12px}
+.dg-detail .dg-row{display:flex;gap:8px;font-size:12px;margin-bottom:4px;align-items:center}
+.dg-detail .dg-row:last-child{margin-bottom:0}
+.dg-detail .dg-label{color:var(--text-muted);min-width:70px}
+.dg-detail .dg-val{color:var(--text-primary);font-weight:500}
+.dg-detail.expired-detail{opacity:0.6}
+.dg-detail.expired-detail .dg-val{text-decoration:line-through;color:var(--text-muted)}
+.expired-badge{font-size:10px;padding:1px 6px;border-radius:3px;background:#fff1f0;color:var(--destructive);font-weight:500;margin-left:6px}
+
+/* 评语弹窗内 */
+.review-group{margin-bottom:16px}
+.rg-title{font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.rg-round-tabs{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap}
+.rg-round-tab{padding:3px 10px;font-size:11px;border-radius:3px;cursor:pointer;color:var(--text-muted);background:var(--bg);border:1px solid var(--border);transition:all 0.15s}
+.rg-round-tab.active{color:var(--primary);background:var(--primary-light);border-color:var(--primary);font-weight:500}
+.rg-detail{background:var(--bg);border-radius:6px;padding:10px 12px}
+.rg-detail .rg-row{display:flex;gap:8px;font-size:12px;margin-bottom:4px;align-items:flex-start}
+.rg-detail .rg-row:last-child{margin-bottom:0}
+.rg-detail .rg-label{color:var(--text-muted);min-width:90px;flex-shrink:0}
+.rg-detail .rg-val{color:var(--text-primary);line-height:1.6}
+
+/* 成绩弹窗内 */
+.grade-block{margin-bottom:16px;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.gb-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--border)}
+.gb-title{font-size:13px;font-weight:600;color:var(--text-primary)}
+.gb-total{font-size:15px;font-weight:700;color:var(--primary)}
+.gb-grade-badge{font-size:11px;padding:2px 8px;border-radius:3px;background:#e8f5e9;color:#2e7d32;font-weight:500;margin-left:6px}
+.gb-body{padding:12px 14px}
+.gb-items{display:flex;gap:8px;flex-wrap:wrap}
+.gb-item{flex:1;min-width:120px;background:var(--bg);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)}
+.gb-item .gi-name{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+.gb-item .gi-score{font-size:16px;font-weight:700;color:var(--primary)}
+.gb-item .gi-grade{font-size:11px;color:var(--success);font-weight:500;margin-top:2px}
+.gb-item .gi-btn{margin-top:6px;padding:2px 10px;font-size:11px;border-radius:3px;border:1px solid var(--primary);color:var(--primary);background:transparent;cursor:pointer;transition:all 0.15s}
+.gb-item .gi-btn:hover{background:var(--primary);color:#fff}
+
+/* Toast */
+.toast-msg{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 24px;border-radius:6px;font-size:13px;z-index:9999;opacity:0;transition:opacity 0.3s;pointer-events:none}
+.toast-msg.show{opacity:1}
+
+/* 数据模式切换按钮 */
+.mode-switch{display:flex;align-items:center;gap:8px;margin-bottom:10px;padding:8px 12px;background:var(--card-bg);border-radius:6px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.mode-switch label{font-size:12px;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px}
+.mode-switch input[type="radio"]{accent-color:var(--primary)}
+
 </style>
-</head>
 <body>
 <!-- Header -->
 <div class="header">
@@ -376,337 +472,114 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue"
 
   <div class="main-area">
     <div class="center-panel">
+      
       <div class="page-tabs">
         <div class="page-tab active" onclick="switchPageTab(this)">首页<span class="page-tab-close" onclick="event.stopPropagation()" title="关闭">×</span></div>
         <div class="page-tab" onclick="switchPageTab(this)">流程跟踪<span class="page-tab-close" onclick="event.stopPropagation()" title="关闭">×</span></div>
         <div class="page-tab" onclick="switchPageTab(this)">文档中心<span class="page-tab-close" onclick="event.stopPropagation()" title="关闭">×</span></div>
       </div>
 
-      <!-- 项目信息卡片 -->
+      <!-- 数据模式切换 -->
+      <div class="mode-switch">
+        <span style="font-size:12px;color:var(--text-muted);margin-right:4px">演示模式：</span>
+        <label><input type="radio" name="dataMode" value="hasData" checked onchange="switchDataMode()"> 有数据</label>
+        <label><input type="radio" name="dataMode" value="noData" onchange="switchDataMode()"> 无数据</label>
+      </div>
+
+      <!-- 项目信息卡片 v4 -->
       <div class="project-card">
-        <div class="project-section">
-          <div class="ps-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>课题基本信息</div>
-          <div class="project-info">
-            <div class="pi-row"><span class="pi-label">课题名称</span><span class="pi-value">基于深度学习的图像识别系统设计</span></div>
-            <div class="pi-row"><span class="pi-label">学生信息</span><span class="pi-value">李小明 / 2021012345</span></div>
-            <div class="pi-row"><span class="pi-label">指导教师</span><span class="pi-value">王教授 / teacher_001</span></div>
-            <div class="pi-row"><span class="pi-label">所属组织</span><span class="pi-value">计算机学院 / 物联网工程</span></div>
+        <!-- 课题基本信息：一行横排 -->
+        <div class="project-header-bar">
+          <div class="ph-item"><span class="ph-label">课题：</span><span class="ph-value">基于深度学习的图像识别系统设计与实现</span></div>
+          <span class="ph-sep">|</span>
+          <div class="ph-item"><span class="ph-label">学生：</span><span class="ph-value">李小明/2021012345</span></div>
+          <span class="ph-sep">|</span>
+          <div class="ph-item"><span class="ph-label">指导教师：</span><span class="ph-value">王建国 教授</span></div>
+          <span class="ph-sep">|</span>
+          <div class="ph-item"><span class="ph-label">所属组织：</span><span class="ph-value">计算机学院 / 物联网工程</span></div>
+        </div>
+
+        <!-- 答辩组信息 -->
+        <div class="info-section" id="defenseSection">
+          <div class="is-header">
+            <div class="is-title">📋 答辩组信息</div>
+            <button class="is-more" onclick="openDetailModal('defense')">更多 →</button>
+          </div>
+          <div class="has-data-content">
+            <div class="defense-latest">
+              <span class="dl-tag">定稿答辩 2辩</span>
+              <span class="dl-detail">内站2计算机-4 | 计算机学院 C102 | 2026-07-05 09:00</span>
+            </div>
+          </div>
+          <div class="no-data-content" style="display:none">
+            <div class="is-empty">暂无答辩安排</div>
           </div>
         </div>
-        <div class="project-section">
-          <div class="ps-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>答辩组信息</div>
-          <div class="project-info">
-            <div class="pi-row"><span class="pi-label">答辩时间</span><span class="pi-value">2026-06-28（周六）14:00</span></div>
-            <div class="pi-row"><span class="pi-label">答辩地点</span><span class="pi-value">计算机学院 A305</span></div>
-            <div class="pi-row"><span class="pi-label">答辩组别</span><span class="pi-value">第 3 组</span></div>
+
+        <!-- 评语信息 -->
+        <div class="info-section" id="reviewSection">
+          <div class="is-header">
+            <div class="is-title">💬 评语信息<span style="font-size:11px;color:var(--text-muted);margin-left:4px">（共5条）</span></div>
+            <button class="is-more" onclick="openDetailModal('review')">更多 →</button>
           </div>
-          <div style="margin-top:8px">
-            <div class="ps-title" style="margin-bottom:6px">答辩委员会</div>
-            <div class="defense-committee">
-              <div class="dc-member"><span class="dc-role dc-chair">主席</span><span class="dc-name">张建国 教授</span><span class="dc-org">计算机学院</span></div>
-              <div class="dc-member"><span class="dc-role dc-secretary">秘书</span><span class="dc-name">刘芳 讲师</span><span class="dc-org">计算机学院</span></div>
-              <div class="dc-member"><span class="dc-name">陈大明 教授</span><span class="dc-org">软件学院</span></div>
-              <div class="dc-member"><span class="dc-name">周伟 副教授</span><span class="dc-org">人工智能学院</span></div>
+          <div class="has-data-content">
+            <div class="review-cards">
+              <div class="review-card">
+                <div class="rc-title">指导教师评分 <span class="rc-badge">定稿2辩</span></div>
+                <div class="rc-text">该生选题切合教育实际，研究思路清晰，论文结构完整，工作量饱满。同意答辩。</div>
+              </div>
+              <div class="review-card">
+                <div class="rc-title">评阅教师评分 <span class="rc-badge">定稿1辩</span></div>
+                <div class="rc-text">论文结构完整，论证充分，数据详实，格式规范。同意答辩。</div>
+              </div>
             </div>
+          </div>
+          <div class="no-data-content" style="display:none">
+            <div class="is-empty">暂无评语数据</div>
           </div>
         </div>
-        <div class="project-section">
-          <div class="ps-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>评语与成绩</div>
-          <div class="scores-panel">
-            <div class="score-row">
-              <span class="score-label">指导教师评分</span>
-              <span class="score-value">92<span class="score-unit">分</span></span>
+
+        <!-- 成绩查看 -->
+        <div class="info-section" id="scoreSection">
+          <div class="is-header">
+            <div class="is-title">🏆 成绩查看</div>
+            <button class="is-more" onclick="openDetailModal('score')">更多 →</button>
+          </div>
+          <div class="has-data-content">
+            <div class="score-cards">
+              <div class="score-card">
+                <div class="sc-type">总评成绩</div>
+                <div class="sc-score">90.5</div>
+                <div class="sc-grade">优秀</div>
+              </div>
+              <div class="score-card">
+                <div class="sc-type">初评成绩</div>
+                <div class="sc-nodata">暂无总分</div>
+              </div>
+              <div class="score-card">
+                <div class="sc-type">答辩成绩</div>
+                <div class="sc-score">85</div>
+                <div class="sc-grade">良</div>
+              </div>
+              <div class="score-card">
+                <div class="sc-type">开题成绩</div>
+                <div class="sc-score">75</div>
+                <div class="sc-grade">良</div>
+              </div>
             </div>
-            <div class="score-row">
-              <span class="score-label">指导教师评语</span>
-              <p class="score-comment">该生选题切合实际，研究思路清晰，系统设计合理。论文结构完整，论述充分，代码实现质量较高。在指导过程中态度认真，能主动思考并提出改进方案。答辩表达流畅，对问题理解深入。</p>
-            </div>
-            <div class="score-row" style="margin-top:10px">
-              <span class="score-label">答辩组评分</span>
-              <span class="score-value">89<span class="score-unit">分</span></span>
-            </div>
-            <div class="score-row">
-              <span class="score-label">答辩组评语</span>
-              <p class="score-comment">论文选题具有较好的实践价值，工作量饱满。系统功能实现完整，测试充分。答辩陈述条理清楚，回答问题基本准确，建议进一步深化模型对比实验分析。</p>
-            </div>
-            <div class="final-score-bar">
-              <span class="final-label">最终成绩</span>
-              <span class="final-grade">优秀</span>
-              <span class="final-number">90.5 分</span>
-            </div>
+          </div>
+          <div class="no-data-content" style="display:none">
+            <div class="is-empty">暂无成绩数据</div>
           </div>
         </div>
       </div>
 
-      <!-- 流程/任务 双视图 -->
-      <div class="flow-header-row">
-        <div class="flow-title-row">
-          <div class="fw-title">毕设流程</div>
-        </div>
+      <!-- 毕设流程区域占位 -->
+      <div style="background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--shadow);margin:12px 0;padding:40px;text-align:center;color:var(--text-muted);font-size:14px;border:2px dashed var(--border)">
+        毕设流程区域（流程跟踪 / 任务视图 / 其他业务等）
       </div>
 
-      <div class="timeline" id="flowView">
-        <!-- 选题 - 已完成 -->
-        <div class="tl-node completed" id="tl-select">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">选题</span>
-            <span class="tl-badge completed">已完成</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">提交选题</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">指导教师审核</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">系主任审核</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">审核通过</span></div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-05-20</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value">2026-05-15</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value pass">通过</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value pass">已完成</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 开题报告 - 进行中 -->
-        <div class="tl-node current open" id="tl-proposal">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">开题报告</span>
-            <span class="tl-badge current-badge">进行中</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-todo-banner">
-              <div class="tt-left"><div class="tt-title">你的开题报告待提交</div><div class="tt-meta">距截止还有 7 天</div></div>
-              <button class="tt-btn" onclick="alert('打开开题报告提交页面')">去提交</button>
-            </div>
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">提交开题报告</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot active"></span><span class="f-label active-label">指导教师审核</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">系主任审核</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">审核通过</span></div>
-            </div>
-            <div class="tl-tasks-area">
-              <div class="tv-item urgent" onclick="alert('打开开题报告提交页面')">
-                <span class="tv-dot"></span>
-                <div class="tv-info">
-                  <div class="tv-title">开题报告提交</div>
-                  <div class="tv-meta">距截止 7 天</div>
-                </div>
-                <button class="tv-btn" onclick="event.stopPropagation();alert('打开开题报告提交页面')">去处理</button>
-              </div>
-              <div class="tv-item" onclick="alert('打开外文翻译页面')">
-                <span class="tv-dot"></span>
-                <div class="tv-info">
-                  <div class="tv-title">外文翻译提交</div>
-                  <div class="tv-meta">距截止 15 天</div>
-                </div>
-                <button class="tv-btn" onclick="event.stopPropagation();alert('打开外文翻译页面')">去处理</button>
-              </div>
-              <div class="tv-item" onclick="alert('打开文献综述页面')">
-                <span class="tv-dot"></span>
-                <div class="tv-info">
-                  <div class="tv-title">文献综述提交</div>
-                  <div class="tv-meta">距截止 15 天</div>
-                </div>
-                <button class="tv-btn" onclick="event.stopPropagation();alert('打开文献综述页面')">去处理</button>
-              </div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-06-30</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value" style="color:var(--warning);font-weight:500;">待提交</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 中期检查 - 未开始 -->
-        <div class="tl-node pending" id="tl-midterm">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">中期检查</span>
-            <span class="tl-badge pending-badge">未开始</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">提交材料</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">指导教师评分</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">系主任审核</span></div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-07-31</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value no-val">未开始</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 论文撰写 - 未开始 -->
-        <div class="tl-node pending" id="tl-writing">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">论文撰写</span>
-            <span class="tl-badge pending-badge">未开始</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">初稿提交</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">指导教师评阅</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">修改定稿</span></div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-08-31</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value no-val">未开始</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 答辩 - 未开始 -->
-        <div class="tl-node pending" id="tl-defense">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">答辩</span>
-            <span class="tl-badge pending-badge">未开始</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">答辩申请</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">答辩安排</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">答辩评分</span></div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-10-15</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value no-val">未开始</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 成绩与归档 - 未开始 -->
-        <div class="tl-node pending" id="tl-grade">
-          <div class="tl-header" onclick="toggleNode(this)">
-            <span class="tl-dot"></span>
-            <span class="tl-name">成绩与归档</span>
-            <span class="tl-badge pending-badge">未开始</span>
-            <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-          </div>
-          <div class="tl-body">
-            <div class="tl-flow">
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">最终成绩评定</span></div>
-              <span class="tl-flow-arrow">→</span>
-              <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">论文归档</span></div>
-            </div>
-            <div class="tl-detail">
-              <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-11-30</div></div>
-              <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-              <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value no-val">未开始</div></div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-
-      <!-- 其他业务 -->
-      <div class="other-group-title">其他</div>
-
-      <!-- 指导日志 -->
-      <div class="tl-node current open" id="tl-log">
-        <div class="tl-header" onclick="toggleNode(this)">
-          <span class="tl-dot"></span>
-          <span class="tl-name">指导日志</span>
-          <span class="tl-badge current-badge">进行中</span>
-          <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
-        <div class="tl-body">
-          <div class="tl-tasks-area">
-            <div class="tv-item urgent" onclick="alert('打开指导日志提交页面')">
-              <span class="tv-dot"></span>
-              <div class="tv-info">
-                <div class="tv-title">提交指导日志</div>
-                <div class="tv-meta">距截止 5 天</div>
-              </div>
-              <button class="tv-btn" onclick="event.stopPropagation();alert('打开指导日志提交页面')">去处理</button>
-            </div>
-          </div>
-          <div class="tl-flow">
-            <div class="tl-flow-step"><span class="f-dot done">✓</span><span class="f-label done-label">提交指导日志</span></div>
-            <span class="tl-flow-arrow">→</span>
-            <div class="tl-flow-step"><span class="f-dot active"></span><span class="f-label active-label">指导教师审核</span></div>
-            <span class="tl-flow-arrow">→</span>
-            <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">审核通过</span></div>
-          </div>
-          <div class="tl-detail">
-            <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-07-01</div></div>
-            <div class="d-item"><div class="d-label">提交时间</div><div class="d-value">2026-06-20</div></div>
-            <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-            <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value" style="color:var(--warning);font-weight:500;">审核中</div></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 学生评教 -->
-      <div class="tl-node pending" id="tl-eval">
-        <div class="tl-header" onclick="toggleNode(this)">
-          <span class="tl-dot"></span>
-          <span class="tl-name">学生评教</span>
-          <span class="tl-badge pending-badge">未开始</span>
-          <svg class="tl-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9,18 15,12 9,6"/></svg>
-        </div>
-        <div class="tl-body">
-          <div class="tl-tasks-area">
-            <div class="tv-item" onclick="alert('打开学生评教页面')">
-              <span class="tv-dot"></span>
-              <div class="tv-info">
-                <div class="tv-title">提交评价表</div>
-                <div class="tv-meta">距截止 30 天</div>
-              </div>
-              <button class="tv-btn" onclick="event.stopPropagation();alert('打开学生评教页面')">去处理</button>
-            </div>
-          </div>
-          <div class="tl-flow">
-            <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">提交评价表</span></div>
-            <span class="tl-flow-arrow">→</span>
-            <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">系主任审核</span></div>
-            <span class="tl-flow-arrow">→</span>
-            <div class="tl-flow-step"><span class="f-dot wait"></span><span class="f-label">审核通过</span></div>
-          </div>
-          <div class="tl-detail">
-            <div class="d-item"><div class="d-label">截止时间</div><div class="d-value">2026-07-25</div></div>
-            <div class="d-item"><div class="d-label">提交时间</div><div class="d-value no-val">--</div></div>
-            <div class="d-item"><div class="d-label">审核结果</div><div class="d-value no-val">--</div></div>
-            <div class="d-item"><div class="d-label">阶段状态</div><div class="d-value no-val">未开始</div></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Right -->
+        <!-- Right -->
     <div class="right-panel">
       <!-- 快捷工具（竖向） -->
       <div class="card shortcut-v-card">
@@ -854,6 +727,232 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue"
     <div class="modal-footer"><button onclick="closeAnnModal()">知道了</button></div>
   </div>
 </div>
+
+
+
+<!-- Detail Modal -->
+<div class="detail-modal-overlay" id="detailModal">
+  <div class="detail-modal">
+    <div class="dm-header">
+      <h3 id="dmTitle">详细信息</h3>
+      <button class="dm-close" onclick="closeDetailModal()">&times;</button>
+    </div>
+    <div class="dm-tabs">
+      <div class="dm-tab active" onclick="switchDmTab(this, 'dmDefense')">答辩记录</div>
+      <div class="dm-tab" onclick="switchDmTab(this, 'dmReview')">评语查看</div>
+      <div class="dm-tab" onclick="switchDmTab(this, 'dmScore')">成绩查看</div>
+    </div>
+    <div class="dm-body">
+      <!-- Tab 1: 答辩记录 -->
+      <div class="dm-tab-content active" id="dmDefense">
+        <!-- 定稿答辩 -->
+        <div class="defense-group">
+          <div class="dg-title">📋 定稿答辩</div>
+          <div class="dg-round-tabs">
+            <div class="dg-round-tab active" onclick="switchDefenseRound(this, 'dg-2')">2辩</div>
+            <div class="dg-round-tab" onclick="switchDefenseRound(this, 'dg-1')">1辩 <span class="expired-badge">已过期</span></div>
+          </div>
+          <div id="dg-2" class="dg-detail">
+            <div class="dg-row"><span class="dg-label">答辩组</span><span class="dg-val">内站2计算机-4</span></div>
+            <div class="dg-row"><span class="dg-label">地点</span><span class="dg-val">计算机学院 C102</span></div>
+            <div class="dg-row"><span class="dg-label">时间</span><span class="dg-val">2026-07-05 09:00</span></div>
+          </div>
+          <div id="dg-1" class="dg-detail expired-detail" style="display:none">
+            <div class="dg-row"><span class="dg-label">答辩组</span><span class="dg-val">内站2计算机-2</span></div>
+            <div class="dg-row"><span class="dg-label">地点</span><span class="dg-val">计算机学院 A305</span></div>
+            <div class="dg-row"><span class="dg-label">时间</span><span class="dg-val">2026-06-28 14:00</span></div>
+          </div>
+        </div>
+        <!-- 中期答辩 -->
+        <div class="defense-group">
+          <div class="dg-title">📋 中期答辩</div>
+          <div class="dg-round-tabs">
+            <div class="dg-round-tab active" onclick="switchDefenseRound(this, 'dm-1')">1辩 <span class="expired-badge">已过期</span></div>
+          </div>
+          <div id="dm-1" class="dg-detail expired-detail">
+            <div class="dg-row"><span class="dg-label">答辩组</span><span class="dg-val">内站2计算机-3</span></div>
+            <div class="dg-row"><span class="dg-label">地点</span><span class="dg-val">计算机学院 B201</span></div>
+            <div class="dg-row"><span class="dg-label">时间</span><span class="dg-val">2026-05-18 14:00</span></div>
+          </div>
+        </div>
+        <!-- 开题答辩 -->
+        <div class="defense-group">
+          <div class="dg-title">📋 开题答辩</div>
+          <div class="dg-round-tabs">
+            <div class="dg-round-tab active" onclick="switchDefenseRound(this, 'ko-1')">1辩 <span class="expired-badge">已过期</span></div>
+          </div>
+          <div id="ko-1" class="dg-detail expired-detail">
+            <div class="dg-row"><span class="dg-label">答辩组</span><span class="dg-val">内站2计算机-1</span></div>
+            <div class="dg-row"><span class="dg-label">地点</span><span class="dg-val">计算机学院 A305</span></div>
+            <div class="dg-row"><span class="dg-label">时间</span><span class="dg-val">2026-04-26 09:00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: 评语查看 -->
+      <div class="dm-tab-content" id="dmReview">
+        <!-- 指导教师评分 -->
+        <div class="review-group">
+          <div class="rg-title">📝 指导教师评分</div>
+          <div class="rg-round-tabs">
+            <div class="rg-round-tab active" onclick="switchReviewRound(this, 'rv-advisor-2')">定稿2辩</div>
+            <div class="rg-round-tab" onclick="switchReviewRound(this, 'rv-advisor-1')">定稿1辩</div>
+          </div>
+          <div id="rv-advisor-2" class="rg-detail">
+            <div class="rg-row"><span class="rg-label">评分意见</span><span class="rg-val">该生选题切合教育实际，研究思路清晰，论文结构完整，工作量饱满。</span></div>
+            <div class="rg-row"><span class="rg-label">是否同意答辩</span><span class="rg-val" style="color:var(--success);font-weight:500">是</span></div>
+            <div class="rg-row"><span class="rg-label">评分时间</span><span class="rg-val">2026-06-25</span></div>
+          </div>
+          <div id="rv-advisor-1" class="rg-detail" style="display:none">
+            <div class="rg-row"><span class="rg-label">评分意见</span><span class="rg-val">前期研究基础扎实，文献综述全面。建议加强实验对比分析。</span></div>
+            <div class="rg-row"><span class="rg-label">是否同意答辩</span><span class="rg-val" style="color:var(--success);font-weight:500">是</span></div>
+            <div class="rg-row"><span class="rg-label">评分时间</span><span class="rg-val">2026-06-20</span></div>
+          </div>
+        </div>
+        <!-- 评阅教师评分 -->
+        <div class="review-group">
+          <div class="rg-title">📝 评阅教师评分</div>
+          <div class="rg-round-tabs">
+            <div class="rg-round-tab active" onclick="switchReviewRound(this, 'rv-reviewer-1')">定稿1辩</div>
+          </div>
+          <div id="rv-reviewer-1" class="rg-detail">
+            <div class="rg-row"><span class="rg-label">评分意见</span><span class="rg-val">论文结构完整，论证充分，数据详实，格式规范。</span></div>
+            <div class="rg-row"><span class="rg-label">是否同意答辩</span><span class="rg-val" style="color:var(--success);font-weight:500">是</span></div>
+            <div class="rg-row"><span class="rg-label">评分时间</span><span class="rg-val">2026-06-22</span></div>
+          </div>
+        </div>
+        <!-- 答辩组评分 -->
+        <div class="review-group">
+          <div class="rg-title">📝 答辩组评分</div>
+          <div class="rg-round-tabs">
+            <div class="rg-round-tab active" onclick="switchReviewRound(this, 'rv-defense-1')">定稿1辩</div>
+            <div class="rg-round-tab" onclick="switchReviewRound(this, 'rv-defense-ko')">开题1辩</div>
+          </div>
+          <div id="rv-defense-1" class="rg-detail">
+            <div class="rg-row"><span class="rg-label">评分意见</span><span class="rg-val">答辩表现良好，陈述清晰，回答问题准确。</span></div>
+            <div class="rg-row"><span class="rg-label">是否答辩</span><span class="rg-val" style="color:var(--success);font-weight:500">已答辩</span></div>
+            <div class="rg-row"><span class="rg-label">等级</span><span class="rg-val">良</span></div>
+            <div class="rg-row"><span class="rg-label">是否符合学位论文要求</span><span class="rg-val" style="color:var(--success);font-weight:500">是</span></div>
+            <div class="rg-row"><span class="rg-label">答辩时间</span><span class="rg-val">2026-06-28</span></div>
+          </div>
+          <div id="rv-defense-ko" class="rg-detail" style="display:none">
+            <div class="rg-row"><span class="rg-label">评分意见</span><span class="rg-val">开题思路基本可行，建议补充文献调研。</span></div>
+            <div class="rg-row"><span class="rg-label">等级</span><span class="rg-val">中</span></div>
+            <div class="rg-row"><span class="rg-label">是否符合学位论文要求</span><span class="rg-val" style="color:var(--success);font-weight:500">是</span></div>
+            <div class="rg-row"><span class="rg-label">答辩时间</span><span class="rg-val">2026-04-26</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: 成绩查看 -->
+      <div class="dm-tab-content" id="dmScore">
+        <!-- 总评成绩 -->
+        <div class="grade-block">
+          <div class="gb-header">
+            <span class="gb-title">总评成绩</span>
+            <span><span class="gb-total">90.5分</span><span class="gb-grade-badge">优秀</span></span>
+          </div>
+          <div class="gb-body">
+            <div class="gb-items">
+              <div class="gb-item">
+                <div class="gi-name">指导教师评分</div>
+                <div class="gi-score">28<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">优</div>
+                <button class="gi-btn" onclick="showToast('打开指导教师评分子表单')">查看评语</button>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">评阅教师评分</div>
+                <div class="gi-score">27<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">优</div>
+                <button class="gi-btn" onclick="showToast('打开评阅教师评分子表单')">查看评语</button>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">答辩组评分</div>
+                <div class="gi-score">35.5<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">优</div>
+                <button class="gi-btn" onclick="showToast('打开答辩组评分子表单')">查看评语</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 初评成绩 -->
+        <div class="grade-block">
+          <div class="gb-header">
+            <span class="gb-title">初评成绩</span>
+            <span style="font-size:12px;color:var(--text-muted)">暂无总分</span>
+          </div>
+          <div class="gb-body">
+            <div class="gb-items">
+              <div class="gb-item">
+                <div class="gi-name">指导教师评分</div>
+                <div class="gi-score">26<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">评阅教师评分</div>
+                <div class="gi-score">24<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">答辩组评分</div>
+                <div class="gi-score">35<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">优</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 答辩成绩 -->
+        <div class="grade-block">
+          <div class="gb-header">
+            <span class="gb-title">答辩成绩</span>
+            <span><span class="gb-total">85分</span><span class="gb-grade-badge">良</span></span>
+          </div>
+          <div class="gb-body">
+            <div class="gb-items">
+              <div class="gb-item">
+                <div class="gi-name">指导教师评分</div>
+                <div class="gi-score">28<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+                <button class="gi-btn" onclick="showToast('打开指导教师评分子表单')">查看评语</button>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">评阅教师评分</div>
+                <div class="gi-score">25<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+                <button class="gi-btn" onclick="showToast('打开评阅教师评分子表单')">查看评语</button>
+              </div>
+              <div class="gb-item">
+                <div class="gi-name">答辩组评分</div>
+                <div class="gi-score">32<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+                <button class="gi-btn" onclick="showToast('打开答辩组评分子表单')">查看评语</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 开题成绩 -->
+        <div class="grade-block">
+          <div class="gb-header">
+            <span class="gb-title">开题成绩</span>
+            <span><span class="gb-total">75分</span><span class="gb-grade-badge">良</span></span>
+          </div>
+          <div class="gb-body">
+            <div class="gb-items">
+              <div class="gb-item">
+                <div class="gi-name">开题评分</div>
+                <div class="gi-score">75<span style="font-size:12px;font-weight:400;color:var(--text-muted)">分</span></div>
+                <div class="gi-grade">良</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-msg" id="toastMsg"></div>
 
 <script>
 function toggleNode(header) {
@@ -1044,6 +1143,89 @@ function switchPageTab(el) {
   tabs.forEach(function(t){ t.classList.remove('active'); });
   el.classList.add('active');
 }
+</script>
+
+// ========== v4 新增 JS ==========
+function switchDataMode() {
+  var mode = document.querySelector('input[name="dataMode"]:checked').value;
+  var hasDataEls = document.querySelectorAll('.has-data-content');
+  var noDataEls = document.querySelectorAll('.no-data-content');
+  if (mode === 'hasData') {
+    hasDataEls.forEach(function(el){ el.style.display = ''; });
+    noDataEls.forEach(function(el){ el.style.display = 'none'; });
+  } else {
+    hasDataEls.forEach(function(el){ el.style.display = 'none'; });
+    noDataEls.forEach(function(el){ el.style.display = ''; });
+  }
+}
+
+function openDetailModal(tab) {
+  document.getElementById('detailModal').classList.add('show');
+  if (tab === 'defense') {
+    switchDmTabByName('dmDefense');
+  } else if (tab === 'review') {
+    switchDmTabByName('dmReview');
+  } else if (tab === 'score') {
+    switchDmTabByName('dmScore');
+  }
+}
+
+function closeDetailModal() {
+  document.getElementById('detailModal').classList.remove('show');
+}
+
+document.getElementById('detailModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDetailModal();
+});
+
+function switchDmTab(el, tabId) {
+  var tabs = el.closest('.dm-tabs').querySelectorAll('.dm-tab');
+  tabs.forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  var body = el.closest('.detail-modal').querySelector('.dm-body');
+  body.querySelectorAll('.dm-tab-content').forEach(function(tc){ tc.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+}
+
+function switchDmTabByName(tabId) {
+  var modal = document.getElementById('detailModal');
+  var tabs = modal.querySelectorAll('.dm-tab');
+  tabs.forEach(function(t){ t.classList.remove('active'); });
+  var targetTab = null;
+  tabs.forEach(function(t){
+    if (t.getAttribute('onclick') && t.getAttribute('onclick').indexOf(tabId) > -1) {
+      t.classList.add('active');
+      targetTab = t;
+    }
+  });
+  var body = modal.querySelector('.dm-body');
+  body.querySelectorAll('.dm-tab-content').forEach(function(tc){ tc.classList.remove('active'); });
+  document.getElementById(tabId).classList.add('active');
+}
+
+function switchDefenseRound(el, panelId) {
+  var group = el.closest('.defense-group');
+  group.querySelectorAll('.dg-round-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  group.querySelectorAll('.dg-detail').forEach(function(d){ d.style.display = 'none'; });
+  document.getElementById(panelId).style.display = '';
+}
+
+function switchReviewRound(el, panelId) {
+  var group = el.closest('.review-group');
+  group.querySelectorAll('.rg-round-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+  group.querySelectorAll('.rg-detail').forEach(function(d){ d.style.display = 'none'; });
+  document.getElementById(panelId).style.display = '';
+}
+
+function showToast(msg) {
+  var toast = document.getElementById('toastMsg');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(function(){ toast.classList.remove('show'); }, 3000);
+}
+
 </script>
 </body>
 </html>
