@@ -61,6 +61,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue"
 .project-info .pi-row .pi-label{color:var(--text-muted);min-width:60px;font-size:12px}
 .project-info .pi-row .pi-value{color:var(--text-primary);font-weight:500}
 .project-section .placeholder{color:var(--text-muted);font-size:12px;font-style:italic;padding:4px 0}
+.defense-committee{display:flex;flex-wrap:wrap;gap:6px 12px}
+.dc-member{display:flex;align-items:center;gap:6px;font-size:12px;padding:4px 8px;background:var(--bg-hover);border-radius:6px;min-width:180px}
+.dc-role{font-size:10px;padding:1px 5px;border-radius:3px;font-weight:600;flex-shrink:0}
+.dc-chair{background:#fff3e0;color:#e65100}
+.dc-secretary{background:#e3f2fd;color:#1565c0}
+.dc-name{color:var(--text-primary);font-weight:500}
+.dc-org{color:var(--text-muted);font-size:11px}
+.scores-panel{display:flex;flex-direction:column;gap:6px}
+.score-row{display:flex;align-items:flex-start;gap:8px;font-size:13px}
+.score-label{color:var(--text-muted);font-size:12px;min-width:80px;flex-shrink:0;padding-top:1px}
+.score-value{color:var(--primary);font-weight:700;font-size:16px}
+.score-unit{font-size:11px;font-weight:400;color:var(--text-muted);margin-left:2px}
+.score-comment{color:var(--text-secondary);font-size:12px;line-height:1.7;margin:2px 0 0 88px}
+.final-score-bar{display:flex;align-items:center;gap:8px;margin-top:10px;padding:8px 12px;background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:8px;border:1px solid #c8e6c9}
+.final-label{font-size:12px;color:var(--text-muted)}
+.final-grade{font-size:14px;font-weight:700;color:#2e7d32;padding:2px 10px;background:#fff;border-radius:4px;border:1px solid #a5d6a7}
+.final-number{font-size:14px;font-weight:600;color:#1b5e20}
 .review-item{display:flex;flex-direction:column;gap:2px;padding:4px 0}
 .review-item .ri-label{font-size:11px;color:var(--text-muted)}
 .review-item .ri-value{font-size:12px;color:var(--text-primary)}
@@ -378,11 +395,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue"
         </div>
         <div class="project-section">
           <div class="ps-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>答辩组信息</div>
-          <div class="placeholder">尚未进入答辩环节，答辩组信息将在答辩安排发布后显示。</div>
+          <div class="project-info">
+            <div class="pi-row"><span class="pi-label">答辩时间</span><span class="pi-value">2026-06-28（周六）14:00</span></div>
+            <div class="pi-row"><span class="pi-label">答辩地点</span><span class="pi-value">计算机学院 A305</span></div>
+            <div class="pi-row"><span class="pi-label">答辩组别</span><span class="pi-value">第 3 组</span></div>
+          </div>
+          <div style="margin-top:8px">
+            <div class="ps-title" style="margin-bottom:6px">答辩委员会</div>
+            <div class="defense-committee">
+              <div class="dc-member"><span class="dc-role dc-chair">主席</span><span class="dc-name">张建国 教授</span><span class="dc-org">计算机学院</span></div>
+              <div class="dc-member"><span class="dc-role dc-secretary">秘书</span><span class="dc-name">刘芳 讲师</span><span class="dc-org">计算机学院</span></div>
+              <div class="dc-member"><span class="dc-name">陈大明 教授</span><span class="dc-org">软件学院</span></div>
+              <div class="dc-member"><span class="dc-name">周伟 副教授</span><span class="dc-org">人工智能学院</span></div>
+            </div>
+          </div>
         </div>
         <div class="project-section">
           <div class="ps-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>评语与成绩</div>
-          <div class="placeholder">课题尚未结束，评语与成绩将在所有环节完成后公布。</div>
+          <div class="scores-panel">
+            <div class="score-row">
+              <span class="score-label">指导教师评分</span>
+              <span class="score-value">92<span class="score-unit">分</span></span>
+            </div>
+            <div class="score-row">
+              <span class="score-label">指导教师评语</span>
+              <p class="score-comment">该生选题切合实际，研究思路清晰，系统设计合理。论文结构完整，论述充分，代码实现质量较高。在指导过程中态度认真，能主动思考并提出改进方案。答辩表达流畅，对问题理解深入。</p>
+            </div>
+            <div class="score-row" style="margin-top:10px">
+              <span class="score-label">答辩组评分</span>
+              <span class="score-value">89<span class="score-unit">分</span></span>
+            </div>
+            <div class="score-row">
+              <span class="score-label">答辩组评语</span>
+              <p class="score-comment">论文选题具有较好的实践价值，工作量饱满。系统功能实现完整，测试充分。答辩陈述条理清楚，回答问题基本准确，建议进一步深化模型对比实验分析。</p>
+            </div>
+            <div class="final-score-bar">
+              <span class="final-label">最终成绩</span>
+              <span class="final-grade">优秀</span>
+              <span class="final-number">90.5 分</span>
+            </div>
+          </div>
         </div>
       </div>
 
